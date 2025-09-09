@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
     return (
-        <header className="w-full h-20 bg-white shadow flex items-center justify-between px-8">
+        <header className="w-full h-20 bg-white shadow-sm flex items-center justify-between px-8">
             {/* Logo / Name */}
             <a href="/portfolio" className="text-2xl font-['Lexend_Exa'] hover:text-gray-600">
                 <h1 className="text-2xl font-bold font-['Krona_One']">RHC Jr.</h1>
