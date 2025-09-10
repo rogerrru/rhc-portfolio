@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import rectangle1 from "../assets/home/rectangle-1.svg";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import bg1 from "../assets/home/bg-1.svg";
 import bg2 from "../assets/home/bg-2.svg";
 import bg3 from "../assets/home/bg-3.svg";
@@ -42,11 +42,12 @@ export const Home = () => {
             <Header/>
             <main className="flex-1 items-center justify-center px-5 py-10 pb-10">
                 <section className="max-w-7xl mx-auto px-12 py-16"><h2
-                    className="text-center text-6xl font-lexend_exa font-black mb-10"> HELLO! </h2>
-                    <div className="grid md:grid-cols-2 gap-12 items-center"> {/* Left image */} <img src={rectangle1}
-                                                                                                      alt="Portrait"
-                                                                                                      className="w-full max-w-sm rounded-lg shadow-md mx-auto"/> {/* Right text */}
-                        <div><h3 className="text-xl font-lexend_exa font-black mb-4"> ASPIRING COMPUTER SCIENCE
+                    className="text-center text-3xl md:text-6xl font-lexend_exa font-black mb-10"> HELLO! </h2>
+                    <div className="grid md:grid-cols-2 md:gap-12 items-center"> {/* Left image */}
+                        <img src={rectangle1}
+                             alt="Portrait"
+                             className="w-full max-w-sm rounded-lg shadow-md mx-auto mb-4 md:mb-0"/> {/* Right text */}
+                        <div><h3 className="text-center md:text-right text-lg md:text-xl font-lexend_exa font-black mb-4"> ASPIRING COMPUTER SCIENCE
                             PROFESSIONAL </h3> <p
                             className="font-lancelot text-xl text-gray-700 mb-6 leading-relaxed text-justify"> Hi there,
                             I&apos;m Roger Chegyem, a Computer Science enthusiast with a solid foundation in academic
@@ -54,8 +55,8 @@ export const Home = () => {
                             learning new things, building solutions, and growing both personally and professionally.
                             Take a look around, and feel free to reach out — I&apos;d love to collaborate! </p>
                             <Link
-                            to="/resume"
-                            className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"> RESUME </Link>
+                                to="/resume"
+                                className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"> RESUME </Link>
                         </div>
                     </div>
                     <hr className="mt-16 border-t border-gray-300"/>
@@ -113,7 +114,8 @@ export const Home = () => {
                                         alt={project.title}
                                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                     />
-                                    <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2 text-center">
+                                    <div
+                                        className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white p-2 text-center">
                                         <h3 className="text-lg font-bold">{project.title}</h3>
                                         <p className="text-xs mt-1">{project.desc}</p>
                                     </div>
