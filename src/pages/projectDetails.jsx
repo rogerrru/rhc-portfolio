@@ -10,6 +10,7 @@ import bg4 from "../assets/home/bg-4.svg";
 import bg5 from "../assets/home/bg-5.svg";
 import bg6 from "../assets/home/bg-6.svg";
 import bg7 from "../assets/home/bg-7.svg";
+import BackToTop from "../components/backToTop.jsx";
 
 
 const ProjectDetails = () => {
@@ -127,6 +128,7 @@ const ProjectDetails = () => {
                 </div>
             </main>
             <Footer />
+            <BackToTop />
         </div>
     );
 };

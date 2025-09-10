@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 import resume from "../assets/resume/resume.svg";
+import BackToTop from "../components/backToTop.jsx";
 
 const Resume = () => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -65,6 +66,7 @@ const Resume = () => {
             )}
 
             <Footer />
+            <BackToTop />
         </div>
     );
 };

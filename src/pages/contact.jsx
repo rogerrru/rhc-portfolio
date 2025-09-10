@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 import contact_pic from "../assets/home/rectangle-5.svg"
+import BackToTop from "../components/backToTop.jsx";
 
 const Contact = () => {
     return (
@@ -50,8 +51,8 @@ const Contact = () => {
                     </div>
                 </div>
             </main>
-
             <Footer />
+            <BackToTop />
         </div>
     );
 };
