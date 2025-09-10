@@ -29,7 +29,7 @@ const certifications = [
         icon: certIcon3,
     },
     {
-        name: "Machine Learning Specialization",
+        name: "Certificate of Eligibility",
         platform: "Civil Service Commission",
         icon: certIcon4,
     },
@@ -51,7 +51,7 @@ const Resume = () => {
                     {/* Left side */}
 
                     <div
-                        className="flex flex-col h-full rounded-2xl w-full lg:h-[800px] cursor-pointer overflow-hidden justify-center items-center">
+                        className="flex flex-col h-full rounded-2xl w-full lg:h-[800px] overflow-hidden justify-center items-center">
                         {/* Intro */}
                         <div>
                             <h1 className="font-lexend_exa text-6xl md:text-6xl font-black text-[#383838] mb-4">
@@ -66,7 +66,6 @@ const Resume = () => {
                             </p>
                         </div>
 
-                        {/* Certifications */}
                         {/* Certifications */}
                         <div className="flex flex-col flex-1 h-full">
                             <h2 className="font-lexend_exa text-3xl font-black text-[#383838] mb-6">

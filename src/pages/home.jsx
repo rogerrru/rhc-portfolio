@@ -163,7 +163,7 @@ export const Home = () => {
                         <img
                             src={selectedProject.img}
                             alt={selectedProject.title}
-                            className="w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                            className="w-full max-h-[70vh] object-contain rounded-lg shadow-g"
                         />
                         <div className="mt-4 text-center text-white">
                             <h3 className="text-2xl font-bold">{selectedProject.title}</h3>
