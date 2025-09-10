@@ -1,8 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import line2 from "../assets/home/line-2.svg";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            if (window.scrollY > lastScrollY && isOpen) {
+                // scrolling down
+                setIsOpen(false);
+            }
+            lastScrollY = window.scrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [isOpen]);
+
 
     return (
         <header className="w-full flex justify-between items-center px-12 md:px-25 pt-10 md:pt-20 pb-5 relative z-50">
@@ -11,7 +27,7 @@ const Header = () => {
                 <h1 className="text-xl font-krona-one font-bold">RHC Jr.</h1>
             </a>
 
-            {/* Hamburger button for small screens */}
+            {/* Hamburger button */}
             <button
                 className="md:hidden flex flex-col justify-between w-6 h-6 focus:outline-none relative z-50"
                 onClick={() => setIsOpen(!isOpen)}
@@ -51,14 +67,13 @@ const Header = () => {
                 </a>
             </nav>
 
-            {/* Mobile fullscreen navbar (starts below header) */}
-            {/* Mobile fullscreen navbar (pan-up + fade-in) */}
+            {/* Mobile fullscreen navbar */}
             <div
-                className={`fixed top-[80px] left-0 w-full h-[calc(100%-80px)] bg-white flex flex-col justify-center items-center space-y-10 text-2xl font-lexend_exa transition-all duration-500 ease-in-out ${
+                className={`fixed inset-0 bg-white flex flex-col justify-center items-center space-y-10 text-2xl font-lexend_exa transition-all duration-500 ease-in-out ${
                     isOpen
                         ? "opacity-100 translate-y-0"
                         : "opacity-0 -translate-y-10 pointer-events-none"
-                } md:hidden`}
+                } md:hidden z-40`}
             >
                 <a href="/portfolio" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
                     PORTFOLIO

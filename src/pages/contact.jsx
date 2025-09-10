@@ -1,97 +1,61 @@
-import React, { useState, useEffect } from "react";
-import line2 from "../assets/home/line-2.svg";
+import React from "react";
+import Header from "../components/header.jsx";
+import Footer from "../components/footer.jsx";
+import contact_pic from "../assets/home/rectangle-5.svg"
 
-const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-        let lastScrollY = window.scrollY;
-
-        const handleScroll = () => {
-            if (window.scrollY > lastScrollY && isOpen) {
-                // scrolling down
-                setIsOpen(false);
-            }
-            lastScrollY = window.scrollY;
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [isOpen]);
-
-
+const Contact = () => {
     return (
-        <header className="w-full flex justify-between items-center px-12 md:px-25 pt-10 md:pt-20 pb-5 relative z-50">
-            {/* Logo */}
-            <a href="/" className="hover:text-gray-600">
-                <h1 className="text-xl font-krona-one font-bold">RHC Jr.</h1>
-            </a>
+        <div className="w-screen min-h-screen flex flex-col">
+            <Header />
 
-            {/* Hamburger button */}
-            <button
-                className="md:hidden flex flex-col justify-between w-6 h-6 focus:outline-none relative z-50"
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <span
-                    className={`h-0.5 w-full bg-black transform transition-all duration-300 ease-in-out ${
-                        isOpen ? "rotate-45 translate-y-2" : ""
-                    }`}
-                ></span>
-                <span
-                    className={`h-0.5 w-full bg-black transition-all duration-300 ease-in-out ${
-                        isOpen ? "opacity-0" : "opacity-100"
-                    }`}
-                ></span>
-                <span
-                    className={`h-0.5 w-full bg-black transform transition-all duration-300 ease-in-out ${
-                        isOpen ? "-rotate-45 -translate-y-2" : ""
-                    }`}
-                ></span>
-            </button>
+            {/* Main Content */}
+            <main className="flex-1 flex items-center justify-center px-5 py-10 pb-20">
+                <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    {/* Left side */}
+                    <div className="text-center md:text-right">
+                        <h1 className="font-lexend_exa text-3xl md:text-5xl font-extrabold text-gray-900 mb-6">
+                            CONTACT ME.
+                        </h1>
+                        <div className="font-lexend_exa space-y-3 text-xl text-gray-800">
+                            <a
+                                href="mailto:rhchegyem@gmail.com"
+                                className="block hover:underline"
+                            >
+                                rhchegyem@gmail.com
+                            </a>
+                            <p>(+63) 976 185 3106</p>
+                            <a
+                                href="https://linkedin.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block hover:underline"
+                            >
+                                LinkedIn
+                            </a>
+                            <a
+                                href="https://github.com"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block hover:underline"
+                            >
+                                GitHub
+                            </a>
+                        </div>
+                    </div>
 
-            {/* Desktop navbar */}
-            <nav className="hidden md:flex space-x-10 text-xl font-lexend_exa">
-                <a href="/portfolio" className="hover:text-gray-600">
-                    PORTFOLIO
-                </a>
-                <a href="/resume" className="relative hover:text-gray-600">
-                    RESUME
-                    <img
-                        src={line2}
-                        alt=""
-                        className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
-                    />
-                </a>
-                <a href="/contact" className="hover:text-gray-600">
-                    CONTACT
-                </a>
-            </nav>
+                    {/* Right side (placeholder box) */}
+                    <div className="bg-gray-300 rounded-xl h-full h-64 md:h-80">
+                        <img
+                            src={contact_pic}
+                            alt="contact picture"
+                        />
+                    </div>
+                </div>
+            </main>
 
-            {/* Mobile fullscreen navbar */}
-            <div
-                className={`fixed inset-0 bg-blue-200 flex flex-col justify-center items-center space-y-10 text-2xl font-lexend_exa transition-all duration-500 ease-in-out ${
-                    isOpen
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 -translate-y-10 pointer-events-none"
-                } md:hidden z-40`}
-            >
-                <a href="/portfolio" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
-                    PORTFOLIO
-                </a>
-                <a href="/resume" className="relative hover:text-gray-600" onClick={() => setIsOpen(false)}>
-                    RESUME
-                    <img
-                        src={line2}
-                        alt=""
-                        className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
-                    />
-                </a>
-                <a href="/contact" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
-                    CONTACT
-                </a>
-            </div>
-        </header>
+            <Footer />
+        </div>
     );
 };
 
-export default Header;
+export default Contact;
