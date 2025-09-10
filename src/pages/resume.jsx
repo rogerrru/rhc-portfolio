@@ -1,9 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 import resume from "../assets/resume/resume.svg";
 
 const Resume = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
+    const openImage = (project) => setSelectedImage(project);
+    const closeImage = () => setSelectedImage(null);
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -26,7 +29,9 @@ const Resume = () => {
                     </div>
 
                     {/* Right side big box */}
-                    <div className="rounded-2xl w-full lg:h-[800px]">
+                    <div className="rounded-2xl w-full lg:h-[800px]"
+                         onClick={() => openImage(resume)}
+                    >
                         <img
                             src={resume}
                             alt="Portrait"
@@ -34,6 +39,30 @@ const Resume = () => {
                     </div>
                 </section>
             </main>
+            {/* MODAL */}
+            {selectedImage && (
+                <div
+                    className="font-lexend_exa fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
+                    onClick={closeImage}
+                >
+                    <button
+                        onClick={closeImage}
+                        className="absolute top-6 right-6 bg-white rounded-full px-4 py-2 text-black font-bold shadow-lg hover:bg-gray-200"
+                    >
+                        ✕
+                    </button>
+                    <div
+                        className="relative max-w-4xl w-full p-6"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img
+                            src={resume}
+                            alt="resume"
+                            className="w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
+                        />
+                    </div>
+                </div>
+            )}
 
             <Footer />
         </div>
