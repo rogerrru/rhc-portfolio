@@ -44,7 +44,7 @@ const Contact = () => {
                     </div>
 
                     {/* Right side (placeholder box) */}
-                    <div className="bg-gray-300 rounded-xl h-full h-64 md:h-80">
+                    <div className="bg-gray-300 rounded-xl h-full md:h-80">
                         <img
                             src={contact_pic}
                             alt="contact picture"
