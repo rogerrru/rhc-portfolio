@@ -8,7 +8,7 @@ import Contact from './pages/contact';
 
 function App() {
     return (
-        <Router basename="/rhc-portfolio">
+        <Router basename="/rhc-portfolio/">
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<Portfolio />} />

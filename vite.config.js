@@ -5,5 +5,5 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
     ],
-    base: "rhc-portfolio"
+    base: "rhc-portfolio/"
 })
