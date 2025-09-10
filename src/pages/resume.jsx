@@ -29,7 +29,7 @@ const Resume = () => {
                     </div>
 
                     {/* Right side big box */}
-                    <div className="rounded-2xl w-full lg:h-[800px]"
+                    <div className="rounded-2xl w-full lg:h-[800px] cursor-pointer"
                          onClick={() => openImage(resume)}
                     >
                         <img
@@ -47,7 +47,7 @@ const Resume = () => {
                 >
                     <button
                         onClick={closeImage}
-                        className="absolute top-6 right-6 bg-white rounded-full px-4 py-2 text-black font-bold shadow-lg hover:bg-gray-200"
+                        className="cursor-pointer absolute top-6 right-6 bg-white rounded-full px-4 py-2 text-black font-bold shadow-lg hover:bg-gray-200"
                     >
                         ✕
                     </button>

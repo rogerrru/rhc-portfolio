@@ -24,7 +24,7 @@ const Header = () => {
     return (
         <header className="w-full flex justify-between items-center px-12 md:px-25 pt-10 md:pt-20 pb-5 relative z-50">
             {/* Logo */}
-            <Link to="/" className="hover:text-gray-600 z-50" onClick={() => isOpen && setIsOpen(false)} >
+            <Link to="/" className="hover:text-gray-600 z-50" onClick={() => isOpen && setIsOpen(false)}>
                 <h1 className="text-xl font-krona-one font-bold">RHC Jr.</h1>
             </Link>
 
