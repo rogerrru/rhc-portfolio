@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import line2 from "../assets/home/line-2.svg";
+import {Link} from "react-router-dom";
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,9 +24,9 @@ const Header = () => {
     return (
         <header className="w-full flex justify-between items-center px-12 md:px-25 pt-10 md:pt-20 pb-5 relative z-50">
             {/* Logo */}
-            <a href="/" className="hover:text-gray-600">
+            <Link to="/" className="hover:text-gray-600">
                 <h1 className="text-xl font-krona-one font-bold">RHC Jr.</h1>
-            </a>
+            </Link>
 
             {/* Hamburger button */}
             <button
@@ -51,20 +52,20 @@ const Header = () => {
 
             {/* Desktop navbar */}
             <nav className="hidden md:flex space-x-10 text-xl font-lexend_exa">
-                <a href="/portfolio" className="hover:text-gray-600">
+                <Link to="/portfolio" className="hover:text-gray-600">
                     PORTFOLIO
-                </a>
-                <a href="/resume" className="relative hover:text-gray-600">
+                </Link>
+                <Link to="/resume" className="relative hover:text-gray-600">
                     RESUME
                     <img
                         src={line2}
                         alt=""
                         className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
                     />
-                </a>
-                <a href="/contact" className="hover:text-gray-600">
+                </Link>
+                <Link to="/contact" className="hover:text-gray-600">
                     CONTACT
-                </a>
+                </Link>
             </nav>
 
             {/* Mobile fullscreen navbar */}
@@ -75,20 +76,20 @@ const Header = () => {
                         : "opacity-0 -translate-y-10 pointer-events-none"
                 } md:hidden z-40`}
             >
-                <a href="/portfolio" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                <Link to="/portfolio" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
                     PORTFOLIO
-                </a>
-                <a href="/resume" className="relative hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                </Link>
+                <Link to="/resume" className="relative hover:text-gray-600" onClick={() => setIsOpen(false)}>
                     RESUME
                     <img
                         src={line2}
                         alt=""
                         className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
                     />
-                </a>
-                <a href="/contact" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                </Link>
+                <Link to="/contact" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
                     CONTACT
-                </a>
+                </Link>
             </div>
         </header>
     );

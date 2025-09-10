@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import rectangle1 from "../assets/home/rectangle-1.svg";
-import rectangle3 from "../assets/home/rectangle-3.svg";
-import rectangle4 from "../assets/home/rectangle-4.svg";
+import { Link } from "react-router-dom";
 import bg1 from "../assets/home/bg-1.svg";
 import bg2 from "../assets/home/bg-2.svg";
 import bg3 from "../assets/home/bg-3.svg";
@@ -53,9 +52,10 @@ export const Home = () => {
                             I&apos;m Roger Chegyem, a Computer Science enthusiast with a solid foundation in academic
                             learning and hands-on experience from projects and commissions. I&apos;m passionate about
                             learning new things, building solutions, and growing both personally and professionally.
-                            Take a look around, and feel free to reach out — I&apos;d love to collaborate! </p> <a
-                            href="/resume"
-                            className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"> RESUME </a>
+                            Take a look around, and feel free to reach out — I&apos;d love to collaborate! </p>
+                            <Link
+                            to="/resume"
+                            className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"> RESUME </Link>
                         </div>
                     </div>
                     <hr className="mt-16 border-t border-gray-300"/>
@@ -74,12 +74,12 @@ export const Home = () => {
                                 functional, intuitive, and impactful — driven by curiosity,
                                 collaboration, and continuous learning.
                             </p>
-                            <a
-                                href="/portfolio"
+                            <Link
+                                to="/portfolio"
                                 className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
                             >
                                 PORTFOLIO
-                            </a>
+                            </Link>
 
                             {/* Large Project */}
                             <div

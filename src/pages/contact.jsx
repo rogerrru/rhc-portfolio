@@ -25,7 +25,7 @@ const Contact = () => {
                             </a>
                             <p>(+63) 976 185 3106</p>
                             <a
-                                href="https://linkedin.com"
+                                href="https://www.linkedin.com/in/roger-chegyem-4737a6369/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block hover:underline"
@@ -33,7 +33,7 @@ const Contact = () => {
                                 LinkedIn
                             </a>
                             <a
-                                href="https://github.com"
+                                href="https://github.com/rogerrru"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block hover:underline"
