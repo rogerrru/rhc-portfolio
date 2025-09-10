@@ -130,12 +130,12 @@ export const Home = () => {
             {/* MODAL */}
             {selectedImage && (
                 <div
-                    className="cursor-pointer font-lexend_exa fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
+                    className=" font-lexend_exa fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
                     onClick={closeImage}
                 >
                     <button
                         onClick={closeImage}
-                        className="absolute top-6 right-6 bg-white rounded-full px-4 py-2 text-black font-bold shadow-lg hover:bg-gray-200"
+                        className="cursor-pointer absolute top-6 right-6 bg-white rounded-full px-4 py-2 text-black font-bold shadow-lg hover:bg-gray-200"
                     >
                         ✕
                     </button>
