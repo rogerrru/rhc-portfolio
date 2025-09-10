@@ -68,12 +68,12 @@ const Portfolio = () => {
                                 {/* Marquee title */}
                                 <div className="overflow-hidden whitespace-nowrap py-4 relative">
                                     <div className="flex animate-marquee">
-              <span className="text-5xl md:text-7xl font-extrabold tracking-wide mx-4">
-                {category} {category} {category} {category} {category} {category}
-              </span>
-                                        <span className="text-5xl md:text-7xl font-extrabold tracking-wide mx-4">
-                {category} {category} {category} {category} {category} {category}
-              </span>
+                                      <span className="text-5xl md:text-7xl font-extrabold tracking-wide mx-4">
+                                        {category} {category} {category} {category} {category} {category}
+                                      </span>
+                                                                <span className="text-5xl md:text-7xl font-extrabold tracking-wide mx-4">
+                                        {category} {category} {category} {category} {category} {category}
+                                      </span>
                                     </div>
                                 </div>
 

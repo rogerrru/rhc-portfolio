@@ -44,7 +44,7 @@ export const Home = () => {
             <Header />
             <main className="flex-1 items-center justify-center px-5 py-10 pb-10">
                 {/* About Section */}
-                <section className="max-w-7xl mx-auto px-12 py-16">
+                <section className="max-w-7xl mx-auto md:px-12 md:py-16">
                     <h2 className="text-center text-3xl md:text-6xl font-lexend_exa font-black mb-10">
                         HELLO!
                     </h2>
@@ -80,7 +80,7 @@ export const Home = () => {
                 </section>
 
                 {/* Featured Projects */}
-                <section className="max-w-7xl mx-auto px-12 py-16">
+                <section className="max-w-7xl mx-auto md:px-12 pt-10 md:py-16">
                     <h2 className="text-4xl font-lexend_exa font-black mb-8">PROJECTS</h2>
                     <div className="grid md:grid-cols-2 gap-12">
                         {/* Left side */}
