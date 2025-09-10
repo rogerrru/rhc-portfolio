@@ -1,0 +1,143 @@
+[
+  {
+    "id": "scan-scrub",
+    "title": "Scan&Scrub",
+    "desc": "Encyclopedia website for Operating Room procedures and instruments. ReactJS, Tailwind CSS. Co-developed with a team.",
+    "about": "A collaborative academic project building a reference hub for surgical procedures and operating room instruments. Designed for medical students and practitioners as an accessible learning resource.",
+    "whatWeDid": "Built the front-end using ReactJS and TailwindCSS, implemented a categorized encyclopedia layout, and integrated search/filter functionality.",
+    "takeaways": [
+      "Improved React component-based architecture",
+      "Strengthened Tailwind CSS styling skills",
+      "Learned about healthcare data structures"
+    ],
+    "skills": ["ReactJS", "Tailwind CSS", "UI/UX", "Web Development"],
+    "highlights": ["Responsive encyclopedia", "Search & filter system"],
+    "img": "/rhc-portfolio/assets/home/bg-1.svg",
+    "quickInfo": {
+      "team": "2",
+      "duration": "3 MONTHS",
+      "category": "WEBSITE"
+    }
+  },
+  {
+    "id": "ice-ai",
+    "title": "PSC 2023: [Ice-AI]",
+    "desc": "Concept for Generative AI Plugin for IDEs. Conceptual Framework for the plugin. Conceptualized with a team.",
+    "about": "A hackathon entry proposing a generative AI plugin for integrated development environments (IDEs) that assists in code completion, refactoring, and documentation generation.",
+    "whatWeDid": "Drafted the conceptual framework, identified potential AI integrations, and developed use-case workflows.",
+    "takeaways": [
+      "Learned about AI/ML integrations into software development tools",
+      "Gained experience in ideation and pitching innovative concepts"
+    ],
+    "skills": ["Conceptual Design", "Generative AI", "Team Ideation"],
+    "highlights": ["Hackathon concept", "AI-powered IDE workflow"],
+    "img": "/rhc-portfolio/assets/home/bg-2.svg",
+    "quickInfo": {
+      "team": "4",
+      "duration": "1 MONTH",
+      "category": "PUBLICATIONS"
+    }
+  },
+  {
+    "id": "wordy-game",
+    "title": "WORDY Game Project",
+    "desc": "A word puzzle software. Java, Python. Co-developed with a team.",
+    "about": "A desktop game where players form words under time pressure to earn points, testing both vocabulary and reflexes.",
+    "whatWeDid": "Developed the game engine, implemented scoring logic, and designed interactive puzzles.",
+    "takeaways": [
+      "Applied OOP principles in a practical project",
+      "Enhanced understanding of UI programming in desktop apps"
+    ],
+    "skills": ["Java", "Python", "Game Logic", "Desktop Applications"],
+    "highlights": ["Timer-based puzzles", "Cross-platform support"],
+    "img": "/rhc-portfolio/assets/home/bg-3.svg",
+    "quickInfo": {
+      "team": "4",
+      "duration": "3 MONTHS",
+      "category": "SOFTWARE"
+    }
+  },
+  {
+    "id": "events-management",
+    "title": "Events Management System Website",
+    "desc": "Website for event management. NodeJS, PugJS, PHP, HTML, CSS, JavaScript, MySQL, WampServer. Co-developed with a team.",
+    "about": "A comprehensive platform to create, manage, and track events with user authentication, event listings, and admin dashboards.",
+    "whatWeDid": "Developed both front-end and back-end features, including database schema, event CRUD operations, and admin panel.",
+    "takeaways": [
+      "Strengthened full-stack development skills",
+      "Gained experience with relational databases and server setups"
+    ],
+    "skills": [
+      "NodeJS",
+      "PugJS",
+      "PHP",
+      "JavaScript",
+      "MySQL",
+      "WampServer"
+    ],
+    "highlights": ["Admin dashboard", "Event CRUD system", "Database integration"],
+    "img": "/rhc-portfolio/assets/home/bg-4.svg",
+    "quickInfo": {
+      "team": "5",
+      "duration": "2 MONTHS",
+      "category": "WEBSITE"
+    }
+  },
+  {
+    "id": "esports-service",
+    "title": "Esports Service Website",
+    "desc": "Website for latest articles, rankings and information in competitive gaming. HTML, CSS, Javascript, Web Service APIs. Co-developed with a team.",
+    "about": "An esports-focused news and ranking platform delivering live updates, player stats, and curated articles for competitive gaming fans.",
+    "whatWeDid": "Designed the UI, integrated APIs for rankings, and implemented article feeds.",
+    "takeaways": [
+      "Learned API integration in web apps",
+      "Gained experience designing information-heavy UIs"
+    ],
+    "skills": ["HTML", "CSS", "JavaScript", "Web Service APIs"],
+    "highlights": ["Live rankings", "Esports news feed", "Responsive UI"],
+    "img": "/rhc-portfolio/assets/home/bg-5.svg",
+    "quickInfo": {
+      "team": "4",
+      "duration": "3 MONTHS",
+      "category": "WEBSITE"
+    }
+  },
+  {
+    "id": "dengue-prevention",
+    "title": "Dengue Prevention and Control: A Systematic Review",
+    "desc": "Review of Related Literature on current dengue practices and intervention strategies with the use of technology. Co-written with a team.",
+    "about": "A systematic review of global dengue prevention strategies, identifying gaps in practices and highlighting opportunities for technological interventions.",
+    "whatWeDid": "Conducted literature review, synthesized findings, and co-authored the manuscript.",
+    "takeaways": [
+      "Improved academic writing skills",
+      "Learned systematic review methodology"
+    ],
+    "skills": ["Research", "Systematic Review", "Technical Writing"],
+    "highlights": ["Published academic review", "Focused on dengue prevention"],
+    "img": "/rhc-portfolio/assets/home/bg-6.svg",
+    "quickInfo": {
+      "team": "8",
+      "duration": "6 months",
+      "category": "PUBLICATIONS"
+    }
+  },
+  {
+    "id": "dengue-forecasting",
+    "title": "Developing a Machine Learning-Based Forecasting Model and Visualization Tool for Dengue Risk in Baguio City",
+    "desc": "Developed a machine learning–based forecasting model to predict dengue risk in Baguio City, integrating time-series epidemiological and environmental data.",
+    "about": "A research project that combines data science and public health, focusing on dengue outbreak forecasting. Included model development and an interactive visualization dashboard for health officials.",
+    "whatWeDid": "Developed LSTM-based forecasting models, created preprocessing pipelines, and designed a web visualization dashboard.",
+    "takeaways": [
+      "Hands-on experience deploying ML models",
+      "Learned data visualization techniques for public health"
+    ],
+    "skills": ["Python", "TensorFlow", "LSTM", "Data Visualization"],
+    "highlights": ["Time-series ML", "Interactive dashboard", "Public health impact"],
+    "img": "/rhc-portfolio/assets/home/bg-7.svg",
+    "quickInfo": {
+      "team": "8",
+      "duration": "5 months",
+      "category": "PUBLICATIONS"
+    }
+  }
+]
