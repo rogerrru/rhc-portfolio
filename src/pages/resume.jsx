@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
-import resume from "../assets/resume/resume.png";
+import resume from "../assets/resume/resume.svg";
 
 const Resume = () => {
     return (
