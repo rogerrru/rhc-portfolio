@@ -1,47 +1,97 @@
-import React from "react";
-import Header from "../components/header.jsx";
-import Footer from "../components/footer.jsx";
+import React, { useState, useEffect } from "react";
+import line2 from "../assets/home/line-2.svg";
 
-const Contact = () => {
+const Header = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+
+        const handleScroll = () => {
+            if (window.scrollY > lastScrollY && isOpen) {
+                // scrolling down
+                setIsOpen(false);
+            }
+            lastScrollY = window.scrollY;
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [isOpen]);
+
+
     return (
-        <div className="w-screen min-h-screen flex flex-col">
-            <Header />
+        <header className="w-full flex justify-between items-center px-12 md:px-25 pt-10 md:pt-20 pb-5 relative z-50">
+            {/* Logo */}
+            <a href="/" className="hover:text-gray-600">
+                <h1 className="text-xl font-krona-one font-bold">RHC Jr.</h1>
+            </a>
 
-            {/* Main Content */}
-            <main className="flex-1 flex items-center justify-center bg-gray-100 px-5 py-20">
-                <div className="bg-white shadow-md rounded-lg p-10 text-center">
-                    <h1 className="text-3xl md:text-5xl font-bold mb-6">CONTACT ME.</h1>
-                    <div className="space-y-4 text-lg">
-                        <a
-                            href="mailto:rhchegyem@gmail.com"
-                            className="block text-blue-600 hover:underline"
-                        >
-                            rhchegyem@gmail.com
-                        </a>
-                        <p>(+63) 976 185 3106</p>
-                        <a
-                            href="https://linkedin.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block hover:underline"
-                        >
-                            LinkedIn
-                        </a>
-                        <a
-                            href="https://github.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block hover:underline"
-                        >
-                            GitHub
-                        </a>
-                    </div>
-                </div>
-            </main>
+            {/* Hamburger button */}
+            <button
+                className="md:hidden flex flex-col justify-between w-6 h-6 focus:outline-none relative z-50"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span
+                    className={`h-0.5 w-full bg-black transform transition-all duration-300 ease-in-out ${
+                        isOpen ? "rotate-45 translate-y-2" : ""
+                    }`}
+                ></span>
+                <span
+                    className={`h-0.5 w-full bg-black transition-all duration-300 ease-in-out ${
+                        isOpen ? "opacity-0" : "opacity-100"
+                    }`}
+                ></span>
+                <span
+                    className={`h-0.5 w-full bg-black transform transition-all duration-300 ease-in-out ${
+                        isOpen ? "-rotate-45 -translate-y-2" : ""
+                    }`}
+                ></span>
+            </button>
 
-            <Footer />
-        </div>
+            {/* Desktop navbar */}
+            <nav className="hidden md:flex space-x-10 text-xl font-lexend_exa">
+                <a href="/portfolio" className="hover:text-gray-600">
+                    PORTFOLIO
+                </a>
+                <a href="/resume" className="relative hover:text-gray-600">
+                    RESUME
+                    <img
+                        src={line2}
+                        alt=""
+                        className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
+                    />
+                </a>
+                <a href="/contact" className="hover:text-gray-600">
+                    CONTACT
+                </a>
+            </nav>
+
+            {/* Mobile fullscreen navbar */}
+            <div
+                className={`fixed inset-0 bg-blue-200 flex flex-col justify-center items-center space-y-10 text-2xl font-lexend_exa transition-all duration-500 ease-in-out ${
+                    isOpen
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 -translate-y-10 pointer-events-none"
+                } md:hidden z-40`}
+            >
+                <a href="/portfolio" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                    PORTFOLIO
+                </a>
+                <a href="/resume" className="relative hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                    RESUME
+                    <img
+                        src={line2}
+                        alt=""
+                        className="absolute -bottom-1 left-1/2 w-14 transform -translate-x-1/2"
+                    />
+                </a>
+                <a href="/contact" className="hover:text-gray-600" onClick={() => setIsOpen(false)}>
+                    CONTACT
+                </a>
+            </div>
+        </header>
     );
 };
 
-export default Contact;
+export default Header;
