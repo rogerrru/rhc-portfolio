@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -27,10 +28,10 @@ const Footer = () => {
                         NAVIGATION
                     </h3>
                     <ul className="font-lexend_exa font-light space-y-1">
-                        <li><a href="/" className="hover:opacity-80">HOME</a></li>
-                        <li><a href="/portfolio" className="hover:opacity-80">PORTFOLIO</a></li>
-                        <li><a href="/resume" className="hover:opacity-80">RESUME</a></li>
-                        <li><a href="/contact" className="hover:opacity-80">CONTACT</a></li>
+                        <li><Link to="/" className="hover:opacity-80">HOME</Link></li>
+                        <li><Link to="/portfolio" className="hover:opacity-80">PORTFOLIO</Link></li>
+                        <li><Link to="/resume" className="hover:opacity-80">RESUME</Link></li>
+                        <li><Link to="/contact" className="hover:opacity-80">CONTACT</Link></li>
                     </ul>
                 </div>
 
