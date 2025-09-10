@@ -42,7 +42,7 @@ const Resume = () => {
             {/* MODAL */}
             {selectedImage && (
                 <div
-                    className="font-lexend_exa fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
+                    className="cursor-pointer font-lexend_exa fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]"
                     onClick={closeImage}
                 >
                     <button
