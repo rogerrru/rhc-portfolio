@@ -1,0 +1,50 @@
+import React from "react";
+
+const Footer = () => {
+    return (
+        <footer className="bg-gray-800 text-white px-12 py-12">
+            <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 text-center md:text-left">
+                {/* Personal */}
+                <div>
+                    <h3 className="font-lexend_exa font-black text-lg mb-2">
+                        ROGER JR. H. CHEGYEM
+                    </h3>
+                    <div className="font-lexend_exa font-light">
+                        <p>PHILIPPINE-BASED</p>
+                        <a
+                            href="mailto:rhchegyem@gmail.com"
+                            className="block underline mt-2 hover:opacity-80"
+                        >
+                            rhchegyem@gmail.com
+                        </a>
+                        <p>(+63) 976 185 3106</p>
+                    </div>
+                </div>
+
+                {/* Navigation */}
+                <div>
+                    <h3 className="font-lexend_exa font-black text-lg mb-2">
+                        NAVIGATION
+                    </h3>
+                    <ul className="font-lexend_exa font-light space-y-1">
+                        <li><a href="/" className="hover:opacity-80">HOME</a></li>
+                        <li><a href="/portfolio" className="hover:opacity-80">PORTFOLIO</a></li>
+                        <li><a href="/resume" className="hover:opacity-80">RESUME</a></li>
+                        <li><a href="/contact" className="hover:opacity-80">CONTACT</a></li>
+                    </ul>
+                </div>
+
+                {/* Links */}
+                <div>
+                    <h3 className="font-lexend_exa font-black text-lg mb-2">LINKS</h3>
+                    <ul className="font-lexend_exa font-light space-y-1">
+                        <li><a href="https://www.linkedin.com/in/roger-chegyem-4737a6369/" className="hover:opacity-80">LINKEDIN</a></li>
+                        <li><a href="https://github.com/rogerrru" className="hover:opacity-80">GITHUB</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    );
+};
+
+export default Footer;
