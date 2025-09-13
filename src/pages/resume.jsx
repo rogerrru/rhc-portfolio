@@ -6,6 +6,8 @@ import certIcon1 from "../assets/icons/ched.svg";
 import certIcon2 from "../assets/icons/trendmicro.svg";
 import certIcon3 from "../assets/icons/dilg.svg";
 import certIcon4 from "../assets/icons/csc.svg";
+import certIcon5 from "../assets/icons/aws1.png";
+import BackToTop from "../components/backToTop.jsx";
 
 const certifications = [
     {
@@ -32,6 +34,11 @@ const certifications = [
         name: "Certificate of Eligibility",
         platform: "Civil Service Commission",
         icon: certIcon4,
+    },
+    {
+        name: "AWS Educate Getting Started with Databases",
+        platform: "Amazon Web Services Training and Certification",
+        icon: certIcon5,
     },
 ];
 
@@ -67,8 +74,8 @@ const Resume = () => {
                         </div>
 
                         {/* Certifications */}
-                        <div className="flex flex-col flex-1 h-full">
-                            <h2 className="font-lexend_exa text-3xl font-black text-[#383838] mb-6">
+                        <div className="flex flex-col flex-1">
+                            <h2 className="font-lexend_exa text-2xl text-center md:text-left md:text-3xl font-black text-[#383838] mb-6">
                                 CERTIFICATIONS
                             </h2>
 
@@ -141,6 +148,7 @@ const Resume = () => {
             )}
 
             <Footer/>
+            <BackToTop/>
         </div>
     );
 };

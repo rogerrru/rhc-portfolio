@@ -42,13 +42,13 @@ export const Home = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-1 items-center justify-center px-5 py-10 pb-10">
+            <main className="flex-1 items-center justify-center px-5 py-10 pb-10 bg-white dark:bg-[#121212]">
                 {/* About Section */}
                 <section className="max-w-7xl mx-auto md:px-12 md:py-16">
-                    <h2 className="text-center text-3xl md:text-6xl font-lexend_exa font-black mb-10">
+                    <h2 className="text-[#000000] dark:text-[#FFFFFF] text-center text-3xl md:text-6xl font-lexend_exa font-black mb-10">
                         HELLO!
                     </h2>
-                    <div className="grid md:grid-cols-2 md:gap-12 items-center">
+                    <div className="grid md:grid-cols-2 md:gap-12 items-center text-[#000000] dark:text-[#FFFFFF]">
                         {/* Left image */}
                         <img
                             src={rectangle1}
@@ -60,7 +60,7 @@ export const Home = () => {
                             <h3 className="text-center md:text-right text-lg md:text-xl font-lexend_exa font-black mb-4">
                                 ASPIRING COMPUTER SCIENCE PROFESSIONAL
                             </h3>
-                            <p className="font-lancelot text-xl text-gray-700 mb-6 leading-relaxed text-justify">
+                            <p className="font-lancelot text-xl dark:text-[#b3b3b3] text-gray-700 mb-6 leading-relaxed text-justify">
                                 Hi there, I&apos;m Roger Chegyem, a Computer Science enthusiast with
                                 a solid foundation in academic learning and hands-on experience
                                 from projects and commissions. I&apos;m passionate about learning
@@ -70,7 +70,7 @@ export const Home = () => {
                             </p>
                             <Link
                                 to="/resume"
-                                className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
+                                className="font-lexend_exa inline-block dark:bg-[#B3B3B3] bg-black dark:text-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
                             >
                                 RESUME
                             </Link>
@@ -81,11 +81,11 @@ export const Home = () => {
 
                 {/* Featured Projects */}
                 <section className="max-w-7xl mx-auto md:px-12 pt-10 md:py-16">
-                    <h2 className="text-4xl font-lexend_exa font-black mb-8">PROJECTS</h2>
+                    <h2 className="text-4xl font-lexend_exa font-black mb-8 dark:text-white text-black">PROJECTS</h2>
                     <div className="grid md:grid-cols-2 gap-12">
                         {/* Left side */}
                         <div>
-                            <p className="font-lancelot text-xl text-gray-700 mb-6 leading-relaxed text-justify">
+                            <p className="font-lancelot text-xl dark:text-[#b3b3b3] text-gray-700 mb-6 leading-relaxed text-justify">
                                 For me, technology is about turning ideas into practical solutions.
                                 With each project, I aim to build tools that are functional,
                                 intuitive, and impactful — driven by curiosity, collaboration, and
@@ -93,7 +93,7 @@ export const Home = () => {
                             </p>
                             <Link
                                 to="/portfolio"
-                                className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
+                                className="font-lexend_exa inline-block dark:bg-[#B3B3B3] bg-black text-white dark:text-black font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
                             >
                                 PORTFOLIO
                             </Link>
