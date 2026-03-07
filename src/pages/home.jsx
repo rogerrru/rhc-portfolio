@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import rectangle1 from "../assets/home/rectangle-1.svg";
+import rectangle1 from "../assets/home/rectangle-1.png";
 import { Link } from "react-router-dom";
 import bg1 from "../assets/home/bg-1.svg";
 import bg2 from "../assets/home/bg-2.svg";
