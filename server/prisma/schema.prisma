@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SiteSetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model ProjectClass {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  slug      String    @unique
+  order     Int       @default(0)
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("project_classes")
+}
+
+model Project {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String?
+  techStack   String[]
+  link        String?
+  githubRepo  String?
+  featured    Boolean      @default(false)
+  order       Int          @default(0)
+  classId     Int
+  class       ProjectClass @relation(fields: [classId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("projects")
+}
+
+model Publication {
+  id          Int       @id @default(autoincrement())
+  title       String
+  summary     String
+  coAuthors   String[]
+  link        String?
+  imageUrl    String?
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("publications")
+}
+
+model Certification {
+  id            Int      @id @default(autoincrement())
+  name          String
+  organization  String
+  issuedAt      DateTime
+  badgeUrl      String?
+  credentialUrl String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("certifications")
+}
+
+model ContactDetail {
+  id        Int      @id @default(autoincrement())
+  email     String?
+  linkedin  String?
+  github    String?
+  phone     String?
+  location  String?
+  updatedAt DateTime @updatedAt
+
+  @@map("contact_details")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admins")
+}

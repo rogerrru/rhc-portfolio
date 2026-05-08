@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Lancelot&family=Lexend+Exa:wght@100..900&display=swap');
+@import 'tailwindcss';
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@tailwind utilities;
+
+@layer base {
+  button,
+  input,
+  select,
+  textarea {
+    @apply bg-transparent outline-none;
+  }
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────────── */
+
+.animate-fade-in {
+  animation: fade-in 0.8s var(--animation-delay, 0s) ease both;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s var(--animation-delay, 0s) ease both;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 8s infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes shimmer {
+  0%, 90%, to { background-position: calc(-100% - var(--shimmer-width)) 0; }
+  30%, 60%    { background-position: calc(100% + var(--shimmer-width)) 0; }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(calc(-100% - var(--gap))); }
+}
+
+/* ── Theme ──────────────────────────────────────────────────────────────────── */
+
+@theme {
+  --font-lexend_exa: "Lexend Exa", sans-serif;
+  --font-krona-one:  "Krona One",  sans-serif;
+  --font-lancelot:   "Lancelot",   serif;
+
+  --animate-marquee: marquee 20s linear infinite;
+
+  @keyframes marquee {
+    0%   { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+/* ── Admin Utility Classes ───────────────────────────────────────────────────── */
+.admin-label {
+  display: block;
+  font-family: var(--font-lexend_exa);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.admin-input {
+  display: block;
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  font-family: var(--font-lexend_exa);
+  color: #111827;
+  background: white;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.admin-input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 2px rgba(17,24,39,0.1);
+}
+
+textarea.admin-input {
+  resize: vertical;
+}
