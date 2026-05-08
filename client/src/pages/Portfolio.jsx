@@ -51,14 +51,13 @@ const Portfolio = () => {
               <MarqueeSection text={cls.name.toUpperCase()} />
 
               {cls.projects?.length > 0 ? (
-                <div className="max-w-6xl mx-auto columns-1 sm:columns-2 lg:columns-3 gap-5 mt-12 px-5">
+                <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-12 px-5">
                   {cls.projects.map((project) => (
-                    <div key={project.id} className="break-inside-avoid mb-5">
-                      <ProjectCard
-                        project={{ ...project, class: cls, _type: 'project' }}
-                        onClick={setSelected}
-                      />
-                    </div>
+                    <ProjectCard
+                      key={project.id}
+                      project={{ ...project, class: cls, _type: 'project' }}
+                      onClick={setSelected}
+                    />
                   ))}
                 </div>
               ) : (
