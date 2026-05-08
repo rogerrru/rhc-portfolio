@@ -1,1 +1,0 @@
-import{r as t,y as u}from"./index-DY648MvW.js";const f=()=>{const[s,e]=t.useState(null),[a,o]=t.useState(!0),[n,r]=t.useState(null);return t.useEffect(()=>{u().then(e).catch(c=>r(c.message)).finally(()=>o(!1))},[]),{contact:s,loading:a,error:n,setContact:e}};export{f as u};
