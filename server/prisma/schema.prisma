@@ -32,6 +32,13 @@ model Project {
   id          Int          @id @default(autoincrement())
   title       String
   description String
+  about       String?
+  whatWeDid   String?
+  takeaways   String[]
+  highlights  String[]
+  skills      String[]
+  team        String?
+  duration    String?
   imageUrl    String?
   techStack   String[]
   link        String?
@@ -50,6 +57,13 @@ model Publication {
   id          Int       @id @default(autoincrement())
   title       String
   summary     String
+  about       String?
+  whatWeDid   String?
+  takeaways   String[]
+  highlights  String[]
+  skills      String[]
+  team        String?
+  duration    String?
   coAuthors   String[]
   link        String?
   imageUrl    String?

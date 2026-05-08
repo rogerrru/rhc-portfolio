@@ -1,12 +1,10 @@
 import cloudinary from '../config/cloudinary.js';
+import { streamToCloudinary } from '../services/cloudinaryService.js';
 
-export const uploadImage = (req, res) => {
+export const uploadImage = async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  // multer-storage-cloudinary attaches the Cloudinary response to req.file
-  res.json({
-    url: req.file.path,
-    publicId: req.file.filename,
-  });
+  const result = await streamToCloudinary(req.file.buffer);
+  res.json({ url: result.secure_url, publicId: result.public_id });
 };
 
 export const deleteImage = async (req, res) => {

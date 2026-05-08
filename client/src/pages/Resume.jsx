@@ -21,8 +21,8 @@ const Resume = () => {
       />
       <Header />
 
-      <main className="flex-1 flex items-center justify-center px-5 py-10 pb-10">
-        <section className="w-full max-w-7xl bg-white py-16 px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <main className="flex-1 flex items-center justify-center px-4 py-6 sm:py-10">
+        <section className="w-full max-w-7xl bg-white py-8 md:py-16 px-4 sm:px-6 md:px-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Left */}
           <motion.div
             className="space-y-8"
@@ -30,44 +30,60 @@ const Resume = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <p className="text-justify text-lg font-lancelot leading-relaxed text-black">
+            <h1 className="font-lexend_exa text-4xl sm:text-5xl md:text-6xl font-black text-[#383838]">
+              HEY THERE!
+            </h1>
+            <p className="text-justify text-sm sm:text-base font-sans leading-relaxed text-black">
               {introText}
             </p>
 
             {/* Certifications */}
             {certifications.length > 0 && (
-              <div>
-                <h3 className="font-lexend_exa font-black text-xl mb-4">CERTIFICATIONS</h3>
-                <ul className="space-y-3">
-                  {certifications.map((cert) => (
-                    <li key={cert.id} className="flex items-start gap-3">
-                      {cert.badgeUrl && (
-                        <img
-                          src={cert.badgeUrl}
-                          alt={cert.organization}
-                          className="w-10 h-10 object-contain rounded"
-                        />
-                      )}
-                      <div>
-                        <p className="font-lexend_exa font-semibold text-sm">{cert.name}</p>
-                        <p className="text-xs text-gray-500">
-                          {cert.organization} &mdash;{' '}
-                          {new Date(cert.issuedAt).getFullYear()}
-                        </p>
-                        {cert.credentialUrl && (
-                          <a
-                            href={cert.credentialUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs underline text-gray-600 hover:text-black"
-                          >
-                            View credential
-                          </a>
+              <div className="flex flex-col">
+                <h2 className="font-lexend_exa text-2xl font-black text-[#383838] mb-4">
+                  CERTIFICATIONS
+                </h2>
+                <div className="overflow-y-auto space-y-3 max-h-[420px] pr-1">
+                  {[...certifications]
+                    .sort((a, b) => new Date(b.issuedAt) - new Date(a.issuedAt))
+                    .map((cert) => (
+                      <div
+                        key={cert.id}
+                        className="flex items-center justify-between bg-gray-200 rounded-xl px-5 py-4 shadow-sm gap-4"
+                      >
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-lexend_exa font-semibold text-sm text-gray-800 leading-snug">
+                            {cert.name}
+                          </span>
+                          <span className="font-lexend_exa text-xs text-gray-600 mt-0.5">
+                            {cert.organization}
+                          </span>
+                          <div className="flex items-center gap-3 mt-1">
+                            <span className="font-lexend_exa text-xs text-gray-500">
+                              {new Date(cert.issuedAt).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}
+                            </span>
+                            {cert.credentialUrl && (
+                              <a
+                                href={cert.credentialUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-lexend_exa text-xs underline text-gray-500 hover:text-black"
+                              >
+                                View credential
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                        {cert.badgeUrl && (
+                          <img
+                            src={cert.badgeUrl}
+                            alt={cert.organization}
+                            className="w-10 h-10 object-contain rounded-md shrink-0"
+                          />
                         )}
                       </div>
-                    </li>
-                  ))}
-                </ul>
+                    ))}
+                </div>
               </div>
             )}
           </motion.div>
@@ -85,7 +101,7 @@ const Resume = () => {
                   <iframe
                     src={resumeUrl}
                     title="Resume PDF"
-                    className="w-full h-[800px] rounded-xl border border-gray-200 shadow"
+                    className="w-full h-[60vh] sm:h-[700px] md:h-[800px] rounded-xl border border-gray-200 shadow"
                   />
                   <a
                     href={resumeUrl}

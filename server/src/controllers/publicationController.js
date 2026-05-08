@@ -14,15 +14,28 @@ export const getOne = async (req, res) => {
   res.json(pub);
 };
 
+const parseArr = (val) =>
+  Array.isArray(val) ? val : (val ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+
 export const create = async (req, res) => {
-  const { title, summary, coAuthors, link, imageUrl, publishedAt } = req.body;
+  const {
+    title, summary, about, whatWeDid, takeaways, highlights, skills,
+    team, duration, coAuthors, link, imageUrl, publishedAt,
+  } = req.body;
+
   const pub = await prisma.publication.create({
     data: {
-      title,
-      summary,
-      coAuthors: coAuthors ?? [],
-      link,
-      imageUrl,
+      title, summary,
+      about: about ?? null,
+      whatWeDid: whatWeDid ?? null,
+      takeaways: parseArr(takeaways),
+      highlights: parseArr(highlights),
+      skills: parseArr(skills),
+      team: team ?? null,
+      duration: duration ?? null,
+      coAuthors: parseArr(coAuthors),
+      link: link ?? null,
+      imageUrl: imageUrl ?? null,
       publishedAt: publishedAt ? new Date(publishedAt) : null,
     },
   });
@@ -30,13 +43,24 @@ export const create = async (req, res) => {
 };
 
 export const update = async (req, res) => {
-  const { title, summary, coAuthors, link, imageUrl, publishedAt } = req.body;
+  const {
+    title, summary, about, whatWeDid, takeaways, highlights, skills,
+    team, duration, coAuthors, link, imageUrl, publishedAt,
+  } = req.body;
+
   const pub = await prisma.publication.update({
     where: { id: parseInt(req.params.id) },
     data: {
       ...(title !== undefined && { title }),
       ...(summary !== undefined && { summary }),
-      ...(coAuthors !== undefined && { coAuthors }),
+      ...(about !== undefined && { about }),
+      ...(whatWeDid !== undefined && { whatWeDid }),
+      ...(takeaways !== undefined && { takeaways: parseArr(takeaways) }),
+      ...(highlights !== undefined && { highlights: parseArr(highlights) }),
+      ...(skills !== undefined && { skills: parseArr(skills) }),
+      ...(team !== undefined && { team }),
+      ...(duration !== undefined && { duration }),
+      ...(coAuthors !== undefined && { coAuthors: parseArr(coAuthors) }),
       ...(link !== undefined && { link }),
       ...(imageUrl !== undefined && { imageUrl }),
       ...(publishedAt !== undefined && { publishedAt: publishedAt ? new Date(publishedAt) : null }),

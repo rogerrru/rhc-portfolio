@@ -22,16 +22,29 @@ export const getOne = async (req, res) => {
   res.json(project);
 };
 
+const parseArr = (val) =>
+  Array.isArray(val) ? val : (val ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+
 export const create = async (req, res) => {
-  const { title, description, imageUrl, techStack, link, githubRepo, classId, featured, order } = req.body;
+  const {
+    title, description, about, whatWeDid, takeaways, highlights, skills,
+    team, duration, imageUrl, techStack, link, githubRepo, classId, featured, order,
+  } = req.body;
+
   const project = await prisma.project.create({
     data: {
-      title,
-      description,
-      imageUrl,
-      techStack: techStack ?? [],
-      link,
-      githubRepo,
+      title, description,
+      about: about ?? null,
+      whatWeDid: whatWeDid ?? null,
+      takeaways: parseArr(takeaways),
+      highlights: parseArr(highlights),
+      skills: parseArr(skills),
+      team: team ?? null,
+      duration: duration ?? null,
+      imageUrl: imageUrl ?? null,
+      techStack: parseArr(techStack),
+      link: link ?? null,
+      githubRepo: githubRepo ?? null,
       classId: parseInt(classId),
       featured: featured ?? false,
       order: order ?? 0,
@@ -42,14 +55,25 @@ export const create = async (req, res) => {
 };
 
 export const update = async (req, res) => {
-  const { title, description, imageUrl, techStack, link, githubRepo, classId, featured, order } = req.body;
+  const {
+    title, description, about, whatWeDid, takeaways, highlights, skills,
+    team, duration, imageUrl, techStack, link, githubRepo, classId, featured, order,
+  } = req.body;
+
   const project = await prisma.project.update({
     where: { id: parseInt(req.params.id) },
     data: {
       ...(title !== undefined && { title }),
       ...(description !== undefined && { description }),
+      ...(about !== undefined && { about }),
+      ...(whatWeDid !== undefined && { whatWeDid }),
+      ...(takeaways !== undefined && { takeaways: parseArr(takeaways) }),
+      ...(highlights !== undefined && { highlights: parseArr(highlights) }),
+      ...(skills !== undefined && { skills: parseArr(skills) }),
+      ...(team !== undefined && { team }),
+      ...(duration !== undefined && { duration }),
       ...(imageUrl !== undefined && { imageUrl }),
-      ...(techStack !== undefined && { techStack }),
+      ...(techStack !== undefined && { techStack: parseArr(techStack) }),
       ...(link !== undefined && { link }),
       ...(githubRepo !== undefined && { githubRepo }),
       ...(classId !== undefined && { classId: parseInt(classId) }),

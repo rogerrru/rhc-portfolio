@@ -4,7 +4,12 @@ import { createPublication, updatePublication, deletePublication, uploadFile } f
 import { usePublications } from '../../hooks/usePublications.js';
 import LoadingSpinner from '../../components/shared/LoadingSpinner.jsx';
 
-const EMPTY = { title: '', summary: '', coAuthors: '', link: '', imageUrl: '', publishedAt: '' };
+const EMPTY = {
+  title: '', summary: '', about: '', whatWeDid: '',
+  takeaways: '', highlights: '', skills: '',
+  team: '', duration: '',
+  coAuthors: '', link: '', imageUrl: '', publishedAt: '',
+};
 
 const PublicationsAdmin = () => {
   const { publications, loading, setPublications } = usePublications();
@@ -37,9 +42,14 @@ const PublicationsAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    const splitCSV = (s) => (s || '').split(',').map((t) => t.trim()).filter(Boolean);
+    const splitLines = (s) => (s || '').split('\n').map((t) => t.trim()).filter(Boolean);
     const payload = {
       ...form,
-      coAuthors: form.coAuthors.split(',').map((a) => a.trim()).filter(Boolean),
+      coAuthors:  splitCSV(form.coAuthors),
+      skills:     splitCSV(form.skills),
+      takeaways:  splitLines(form.takeaways),
+      highlights: splitLines(form.highlights),
     };
     try {
       if (editId) {
@@ -62,7 +72,14 @@ const PublicationsAdmin = () => {
   };
 
   const handleEdit = (pub) => {
-    setForm({ ...pub, coAuthors: pub.coAuthors?.join(', ') || '', publishedAt: pub.publishedAt?.split('T')[0] || '' });
+    setForm({
+      ...pub,
+      coAuthors:  pub.coAuthors?.join(', ') || '',
+      skills:     pub.skills?.join(', ') || '',
+      takeaways:  pub.takeaways?.join('\n') || '',
+      highlights: pub.highlights?.join('\n') || '',
+      publishedAt: pub.publishedAt?.split('T')[0] || '',
+    });
     setEditId(pub.id);
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -103,8 +120,40 @@ const PublicationsAdmin = () => {
           </div>
 
           <div>
-            <label className="admin-label">Summary / Abstract</label>
-            <textarea name="summary" value={form.summary} onChange={handleChange} rows={4} required className="admin-input" />
+            <label className="admin-label">Summary / Abstract (shown in portfolio grid)</label>
+            <textarea name="summary" value={form.summary} onChange={handleChange} rows={3} required className="admin-input" />
+          </div>
+
+          <div>
+            <label className="admin-label">About (extended text for detail page)</label>
+            <textarea name="about" value={form.about} onChange={handleChange} rows={4} className="admin-input" />
+          </div>
+
+          <div>
+            <label className="admin-label">What We Did</label>
+            <textarea name="whatWeDid" value={form.whatWeDid} onChange={handleChange} rows={3} className="admin-input" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="admin-label">Takeaways (one per line)</label>
+              <textarea name="takeaways" value={form.takeaways} onChange={handleChange} rows={4} className="admin-input" placeholder="Insight A&#10;Insight B" />
+            </div>
+            <div>
+              <label className="admin-label">Highlights (one per line)</label>
+              <textarea name="highlights" value={form.highlights} onChange={handleChange} rows={4} className="admin-input" placeholder="Finding X&#10;Result Y" />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="admin-label">Skills / Methods (comma-separated)</label>
+              <input name="skills" value={form.skills} onChange={handleChange} className="admin-input" />
+            </div>
+            <div>
+              <label className="admin-label">Duration</label>
+              <input name="duration" value={form.duration} onChange={handleChange} className="admin-input" />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">

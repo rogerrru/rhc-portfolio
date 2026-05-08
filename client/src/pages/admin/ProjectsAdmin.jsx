@@ -5,6 +5,7 @@ import {
   updateProject,
   deleteProject,
   createProjectClass,
+  updateProjectClass,
   deleteProjectClass,
   uploadFile,
 } from '../../api/index.js';
@@ -14,6 +15,13 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner.jsx';
 const EMPTY_PROJECT = {
   title: '',
   description: '',
+  about: '',
+  whatWeDid: '',
+  takeaways: '',
+  highlights: '',
+  skills: '',
+  team: '',
+  duration: '',
   imageUrl: '',
   techStack: '',
   link: '',
@@ -60,9 +68,13 @@ const ProjectsAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    const splitCSV = (s) => (s || '').split('\n').map((t) => t.trim()).filter(Boolean);
     const payload = {
       ...form,
-      techStack: form.techStack.split(',').map((t) => t.trim()).filter(Boolean),
+      techStack:  form.techStack.split(',').map((t) => t.trim()).filter(Boolean),
+      skills:     form.skills.split(',').map((t) => t.trim()).filter(Boolean),
+      takeaways:  splitCSV(form.takeaways),
+      highlights: splitCSV(form.highlights),
       classId: parseInt(form.classId),
       order: parseInt(form.order) || 0,
     };
@@ -89,7 +101,10 @@ const ProjectsAdmin = () => {
   const handleEdit = (project) => {
     setForm({
       ...project,
-      techStack: project.techStack?.join(', ') || '',
+      techStack:  project.techStack?.join(', ') || '',
+      skills:     project.skills?.join(', ') || '',
+      takeaways:  project.takeaways?.join('\n') || '',
+      highlights: project.highlights?.join('\n') || '',
       classId: project.classId?.toString() || '',
     });
     setEditId(project.id);
@@ -137,6 +152,29 @@ const ProjectsAdmin = () => {
     }
   };
 
+  const handleMoveClass = async (cls, direction) => {
+    const sorted = [...classes].sort((a, b) => a.order - b.order);
+    const idx = sorted.findIndex((c) => c.id === cls.id);
+    const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= sorted.length) return;
+    const other = sorted[swapIdx];
+    try {
+      await Promise.all([
+        updateProjectClass(cls.id, { order: other.order }),
+        updateProjectClass(other.id, { order: cls.order }),
+      ]);
+      setClasses((prev) =>
+        prev.map((c) => {
+          if (c.id === cls.id) return { ...c, order: other.order };
+          if (c.id === other.id) return { ...c, order: cls.order };
+          return c;
+        })
+      );
+    } catch {
+      toast.error('Reorder failed');
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -172,13 +210,43 @@ const ProjectsAdmin = () => {
             <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="admin-input" />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Tech Stack (comma-separated)" name="techStack" value={form.techStack} onChange={handleChange} />
-            <Field label="Live Link" name="link" value={form.link} onChange={handleChange} />
+          <div>
+            <label className="admin-label">About (extended description for detail page)</label>
+            <textarea name="about" value={form.about} onChange={handleChange} rows={4} className="admin-input" />
+          </div>
+
+          <div>
+            <label className="admin-label">What We Did</label>
+            <textarea name="whatWeDid" value={form.whatWeDid} onChange={handleChange} rows={3} className="admin-input" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="admin-label">Takeaways (one per line)</label>
+              <textarea name="takeaways" value={form.takeaways} onChange={handleChange} rows={4} className="admin-input" placeholder="Learned X&#10;Improved Y&#10;Achieved Z" />
+            </div>
+            <div>
+              <label className="admin-label">Highlights (one per line)</label>
+              <textarea name="highlights" value={form.highlights} onChange={handleChange} rows={4} className="admin-input" placeholder="Feature A&#10;Achievement B" />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <Field label="Tech Stack (comma-separated)" name="techStack" value={form.techStack} onChange={handleChange} />
+            <Field label="Skills / Focus (comma-separated)" name="skills" value={form.skills} onChange={handleChange} />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <Field label="Team (number or description, '1' = solo)" name="team" value={form.team} onChange={handleChange} />
+            <Field label="Duration (e.g. 3 months)" name="duration" value={form.duration} onChange={handleChange} />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <Field label="Live Link" name="link" value={form.link} onChange={handleChange} />
             <Field label="GitHub Repo" name="githubRepo" value={form.githubRepo} onChange={handleChange} />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
             <Field label="Order" name="order" type="number" value={form.order} onChange={handleChange} />
           </div>
 
@@ -215,12 +283,27 @@ const ProjectsAdmin = () => {
             {addingClass ? '…' : 'Add'}
           </button>
         </form>
-        <div className="flex flex-wrap gap-2">
-          {classes.map((c) => (
-            <span key={c.id} className="inline-flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1 text-sm font-lexend_exa">
-              {c.name}
-              <button onClick={() => handleDeleteClass(c.id)} className="ml-1 text-red-400 hover:text-red-600 text-xs">✕</button>
-            </span>
+        <div className="space-y-2">
+          {[...classes].sort((a, b) => a.order - b.order).map((c, idx, arr) => (
+            <div key={c.id} className="flex items-center gap-3 bg-gray-100 rounded-lg px-4 py-2.5">
+              <div className="flex flex-col gap-0.5 shrink-0">
+                <button
+                  onClick={() => handleMoveClass(c, 'up')}
+                  disabled={idx === 0}
+                  className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs"
+                  title="Move up"
+                >▲</button>
+                <button
+                  onClick={() => handleMoveClass(c, 'down')}
+                  disabled={idx === arr.length - 1}
+                  className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs"
+                  title="Move down"
+                >▼</button>
+              </div>
+              <span className="font-lexend_exa text-sm flex-1">{c.name}</span>
+              <span className="font-lexend_exa text-xs text-gray-400">order {c.order}</span>
+              <button onClick={() => handleDeleteClass(c.id)} className="text-red-400 hover:text-red-600 text-xs font-lexend_exa">✕</button>
+            </div>
           ))}
         </div>
       </div>

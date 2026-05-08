@@ -2,7 +2,7 @@ import prisma from '../config/database.js';
 
 export const getAll = async (_req, res) => {
   const classes = await prisma.projectClass.findMany({
-    include: { _count: { select: { projects: true } } },
+    include: { projects: { orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] } },
     orderBy: { order: 'asc' },
   });
   res.json(classes);

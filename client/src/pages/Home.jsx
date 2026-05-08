@@ -25,7 +25,7 @@ const Home = () => {
   const heroDesc = settings.home_hero_description || '';
   const projectsDesc = settings.home_projects_description || '';
 
-  const featured = projects.slice(0, 4);
+  const featured = projects;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -39,7 +39,7 @@ const Home = () => {
         {/* Hero */}
         <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
           <motion.h2
-            className="text-center text-6xl font-lexend_exa font-black mb-10"
+            className="text-center text-4xl sm:text-5xl md:text-6xl font-lexend_exa font-black mb-10"
             initial="hidden"
             animate="visible"
             variants={fadeUp}
@@ -64,8 +64,8 @@ const Home = () => {
               variants={fadeUp}
               custom={0.2}
             >
-              <h3 className="text-xl font-lexend_exa font-black mb-4">{heroTitle}</h3>
-              <p className="font-lancelot text-xl text-gray-700 mb-6 leading-relaxed text-justify">
+              <h3 className="text-base sm:text-xl font-lexend_exa font-black mb-4">{heroTitle}</h3>
+              <p className="font-lexend_exa text-sm sm:text-base text-gray-700 mb-6 leading-relaxed text-justify">
                 {heroDesc}
               </p>
               <Link
@@ -82,69 +82,57 @@ const Home = () => {
 
         {/* Projects */}
         <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
-          <motion.h2
-            className="text-4xl font-lexend_exa font-black mb-8"
+          <motion.div
+            className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
             custom={0}
           >
-            PROJECTS
-          </motion.h2>
+            <h2 className="text-4xl font-lexend_exa font-black">PROJECTS</h2>
+            <Link
+              to="/portfolio"
+              className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition text-sm"
+            >
+              VIEW ALL →
+            </Link>
+          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            <motion.div
+          {projectsDesc && (
+            <motion.p
+              className="font-lexend_exa text-base text-gray-700 mb-10 max-w-2xl leading-relaxed"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={0.1}
             >
-              <p className="font-lancelot text-xl text-gray-700 mb-6 leading-relaxed text-justify">
-                {projectsDesc}
-              </p>
-              <Link
-                to="/portfolio"
-                className="font-lexend_exa inline-block bg-black text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition"
-              >
-                PORTFOLIO
-              </Link>
+              {projectsDesc}
+            </motion.p>
+          )}
 
-              {loading ? (
-                <div className="mt-6 h-96 flex items-center justify-center">
-                  <LoadingSpinner />
-                </div>
-              ) : featured[0] ? (
-                <ProjectCard
-                  project={featured[0]}
-                  onClick={setSelected}
-                  className="mt-6 h-96"
-                />
-              ) : null}
-            </motion.div>
-
-            {/* Right grid */}
-            {!loading && featured.length > 1 && (
-              <motion.div
-                className="grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-[300px]"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={0.2}
-              >
-                {featured.slice(1).map((project, i) => (
+          {loading ? (
+            <div className="flex justify-center py-20"><LoadingSpinner /></div>
+          ) : (
+            <motion.div
+              className="columns-1 sm:columns-2 lg:columns-3 gap-5"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              custom={0.2}
+            >
+              {featured.map((project) => (
+                <div key={project.id} className="break-inside-avoid mb-5">
                   <ProjectCard
-                    key={project.id}
-                    project={project}
+                    project={{ ...project, _type: 'project' }}
                     onClick={setSelected}
-                    className={i === 0 ? 'row-span-2' : ''}
                   />
-                ))}
-              </motion.div>
-            )}
-          </div>
+                </div>
+              ))}
+            </motion.div>
+          )}
         </section>
       </main>
 

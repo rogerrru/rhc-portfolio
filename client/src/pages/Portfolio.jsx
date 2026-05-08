@@ -8,7 +8,6 @@ import MarqueeSection from '../components/shared/MarqueeSection.jsx';
 import SEOHead from '../components/shared/SEOHead.jsx';
 import LoadingSpinner from '../components/shared/LoadingSpinner.jsx';
 import { useProjectClasses } from '../hooks/useProjects.js';
-import { usePublications } from '../hooks/usePublications.js';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -18,7 +17,6 @@ const sectionVariants = {
 const Portfolio = () => {
   const [selected, setSelected] = useState(null);
   const { classes, loading: classesLoading } = useProjectClasses();
-  const { publications, loading: pubsLoading } = usePublications();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -53,20 +51,14 @@ const Portfolio = () => {
               <MarqueeSection text={cls.name.toUpperCase()} />
 
               {cls.projects?.length > 0 ? (
-                <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[250px] mt-12 px-5">
-                  {cls.projects.map((project, i) => (
-                    <ProjectCard
-                      key={project.id}
-                      project={{ ...project, class: cls }}
-                      onClick={setSelected}
-                      className={
-                        cls.projects.length === 1
-                          ? 'md:col-span-2 h-64'
-                          : i === 0 && cls.projects.length >= 3
-                          ? 'md:col-span-2'
-                          : ''
-                      }
-                    />
+                <div className="max-w-6xl mx-auto columns-1 sm:columns-2 lg:columns-3 gap-5 mt-12 px-5">
+                  {cls.projects.map((project) => (
+                    <div key={project.id} className="break-inside-avoid mb-5">
+                      <ProjectCard
+                        project={{ ...project, class: cls, _type: 'project' }}
+                        onClick={setSelected}
+                      />
+                    </div>
                   ))}
                 </div>
               ) : (
@@ -76,49 +68,7 @@ const Portfolio = () => {
           ))
         )}
 
-        {/* Publications */}
-        {!pubsLoading && publications.length > 0 && (
-          <motion.section
-            className="font-lexend_exa mb-20 text-[#383838]"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={sectionVariants}
-          >
-            <MarqueeSection text="PUBLICATIONS" />
 
-            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[250px] mt-12 px-5">
-              {publications.map((pub, i) => (
-                <div
-                  key={pub.id}
-                  className={`relative rounded-lg shadow-md overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 cursor-pointer
-                    ${i === 0 && publications.length >= 2 ? 'md:row-span-2' : ''}`}
-                  onClick={() =>
-                    setSelected({
-                      ...pub,
-                      description: pub.summary,
-                      techStack: pub.coAuthors,
-                      link: pub.link,
-                      class: { name: 'Publication' },
-                    })
-                  }
-                >
-                  {pub.imageUrl && (
-                    <img
-                      src={pub.imageUrl}
-                      alt={pub.title}
-                      className="w-full h-full object-cover opacity-40"
-                    />
-                  )}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center">
-                    <h3 className="text-lg font-bold line-clamp-3">{pub.title}</h3>
-                    <p className="text-sm mt-2 opacity-80 line-clamp-3">{pub.summary}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.section>
-        )}
       </main>
 
       {selected && <ProjectModal project={selected} onClose={() => setSelected(null)} />}
