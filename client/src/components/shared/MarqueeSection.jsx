@@ -5,7 +5,7 @@ const MarqueeSection = ({ text, repeat = 2 }) => (
     <div className="flex animate-marquee">
       {Array.from({ length: repeat }, (_, i) => (
         <span key={i} className="text-5xl md:text-7xl font-extrabold tracking-wide mx-4">
-          {Array.from({ length: 6 }, (__, j) => `${text} `).join('')}
+          {Array.from({ length: 6 }, () => `${text} `).join('')}
         </span>
       ))}
     </div>
