@@ -9,13 +9,11 @@
     <title>Roger Chegyem | Portfolio</title>
     <script>
       (function (l) {
-        var p = l.search.slice(1).split('&');
-        var path = p.find(function (s) { return s.startsWith('p='); });
-        if (!path) return;
-        var decoded = path.slice(2).split('~and~').join('&');
-        var query = p.find(function (s) { return s.startsWith('q='); });
-        var qs = query ? '?' + query.slice(2).split('~and~').join('&') : '';
-        window.history.replaceState(null, null, l.pathname.replace(/\/$/, '') + decoded + qs + l.hash);
+        if (l.search[1] !== '/') return;
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&');
+        }).join('?');
+        window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
       }(window.location));
     </script>
   </head>
