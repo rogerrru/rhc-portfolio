@@ -7,6 +7,18 @@
     <meta name="description" content="Roger Jr. H. Chegyem — Full-Stack Developer, Data Analyst, and Machine Learning Engineer." />
     <meta name="theme-color" content="#000000" />
     <title>Roger Chegyem | Portfolio</title>
+    <script>
+      (function (l) {
+        if (l.search[1] === '?') return;
+        var p = l.search.slice(1).split('&');
+        var path = p.find(function (s) { return s.startsWith('p='); });
+        if (!path) return;
+        var decoded = path.slice(2).split('~and~').join('&');
+        var query = p.find(function (s) { return s.startsWith('q='); });
+        var qs = query ? '?' + query.slice(2).split('~and~').join('&') : '';
+        window.history.replaceState(null, null, l.pathname + '/' + decoded + qs + l.hash);
+      }(window.location));
+    </script>
   </head>
   <body>
     <div id="root"></div>
