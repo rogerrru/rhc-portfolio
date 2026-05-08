@@ -78,7 +78,9 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx gh-pages -d dist --dotfiles
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          npx gh-pages -d dist --dotfiles
         working-directory: client
 
   # ─── Validate Server (no deploy — handled by Render auto-deploy) ─────────
