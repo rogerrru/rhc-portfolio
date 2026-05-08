@@ -48,7 +48,7 @@ const Resume = () => {
                 <h2 className="font-lexend_exa text-2xl text-center md:text-left md:text-3xl font-black text-[#383838] mb-6">
                   CERTIFICATIONS
                 </h2>
-                <div className="flex-1 overflow-y-auto pr-2 space-y-4 max-h-[400px]">
+                <div className="flex-1 overflow-y-scroll pr-2 space-y-4 max-h-[400px]">
                   {[...certifications]
                     .sort((a, b) => new Date(b.issuedAt) - new Date(a.issuedAt))
                     .map((cert) => (
