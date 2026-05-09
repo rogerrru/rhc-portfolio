@@ -1,1 +1,0 @@
-import{r as t,x as c}from"./index-BGPggHs9.js";const S=()=>{const[s,e]=t.useState({}),[r,n]=t.useState(!0),[a,o]=t.useState(null);return t.useEffect(()=>{c().then(e).catch(i=>o(i.message)).finally(()=>n(!1))},[]),{settings:s,loading:r,error:a,setSettings:e}};export{S as u};
