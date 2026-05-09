@@ -57,15 +57,29 @@ const ProjectModal = ({ project, onClose }) => {
             )}
 
             <div className="p-5 sm:p-8">
-              <div className="mb-3">
+              <div className="mb-4">
                 <h3 className="text-lg sm:text-2xl font-bold text-gray-900 leading-snug pr-10">
                   {project.title}
                 </h3>
-                {project.class && (
-                  <span className="inline-block mt-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                    {project.class.name}
-                  </span>
-                )}
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  {project.class && (
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                      {project.class.name}
+                    </span>
+                  )}
+                  {project.link && (
+                    <a href={project.link} target="_blank" rel="noopener noreferrer"
+                      className="text-xs bg-black text-white font-bold px-3 py-1 rounded-full hover:bg-gray-700 transition">
+                      Live Project ↗
+                    </a>
+                  )}
+                  {project.githubRepo && (
+                    <a href={project.githubRepo} target="_blank" rel="noopener noreferrer"
+                      className="text-xs border border-gray-300 text-gray-700 font-bold px-3 py-1 rounded-full hover:bg-gray-100 transition">
+                      GitHub ↗
+                    </a>
+                  )}
+                </div>
               </div>
 
               <p className="text-gray-700 leading-relaxed font-lexend_exa text-sm sm:text-base">
@@ -82,7 +96,7 @@ const ProjectModal = ({ project, onClose }) => {
                 </div>
               )}
 
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="mt-6">
                 <Link
                   to={detailPath}
                   onClick={onClose}
@@ -90,19 +104,6 @@ const ProjectModal = ({ project, onClose }) => {
                 >
                   View Full Details →
                 </Link>
-
-                {project.link && (
-                  <a href={project.link} target="_blank" rel="noopener noreferrer"
-                    className="text-sm font-semibold underline hover:text-gray-500">
-                    Live Project
-                  </a>
-                )}
-                {project.githubRepo && (
-                  <a href={project.githubRepo} target="_blank" rel="noopener noreferrer"
-                    className="text-sm font-semibold underline hover:text-gray-500">
-                    GitHub
-                  </a>
-                )}
               </div>
             </div>
           </div>
