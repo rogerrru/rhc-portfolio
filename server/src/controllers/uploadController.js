@@ -3,6 +3,9 @@ import { streamToCloudinary } from '../services/cloudinaryService.js';
 
 export const uploadImage = async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  if (!process.env.CLOUDINARY_URL) {
+    return res.status(500).json({ error: 'CLOUDINARY_URL environment variable is not set on the server' });
+  }
   const result = await streamToCloudinary(req.file.buffer);
   res.json({ url: result.secure_url, publicId: result.public_id });
 };
