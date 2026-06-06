@@ -13,7 +13,6 @@ const AdminLayout = lazy(() => import('./pages/admin/AdminLayout.jsx'));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard.jsx'));
 const ProjectsAdmin = lazy(() => import('./pages/admin/ProjectsAdmin.jsx'));
 const CertificationsAdmin = lazy(() => import('./pages/admin/CertificationsAdmin.jsx'));
-const SettingsAdmin = lazy(() => import('./pages/admin/SettingsAdmin.jsx'));
 
 const ProtectedRoute = ({ children }) => {
   const { token } = useAuth();
@@ -47,7 +46,6 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="projects" element={<ProjectsAdmin />} />
             <Route path="certifications" element={<CertificationsAdmin />} />
-            <Route path="settings" element={<SettingsAdmin />} />
           </Route>
         </Routes>
       </Suspense>

@@ -3,16 +3,14 @@ import { motion } from 'framer-motion';
 import Header from '../components/layout/Header.jsx';
 import Footer from '../components/layout/Footer.jsx';
 import SEOHead from '../components/shared/SEOHead.jsx';
-import { useSiteSettings } from '../hooks/useSiteSettings.js';
 import { useCertifications } from '../hooks/useCertifications.js';
 
+const INTRO_TEXT = "My name's Roger Jr. H. Chegyem. I'm a Computer Science professional from Baguio City with experience in web development, data science, and machine learning. Glad you're here. Feel free to look through my projects and work — always open to learning, building, and collaborating. Cheers!";
+const RESUME_URL = 'https://res.cloudinary.com/dns9pxqy2/image/upload/v1778341953/resume_ikevzs.svg';
+
 const Resume = () => {
-  const { settings } = useSiteSettings();
   const { certifications } = useCertifications();
   const [modalOpen, setModalOpen] = useState(false);
-
-  const introText = settings.resume_intro || '';
-  const resumeUrl = settings.resume_url || '';
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,7 +36,7 @@ const Resume = () => {
                 HEY THERE!
               </h1>
               <p className="text-justify text-lg font-serif leading-relaxed text-black mb-10">
-                {introText}
+                {INTRO_TEXT}
               </p>
             </div>
 
@@ -104,11 +102,11 @@ const Resume = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            onClick={() => resumeUrl && setModalOpen(true)}
+            onClick={() => RESUME_URL && setModalOpen(true)}
           >
-            {resumeUrl ? (
+            {RESUME_URL ? (
               <img
-                src={resumeUrl}
+                src={RESUME_URL}
                 alt="Resume"
                 className="max-h-[800px] w-auto object-contain"
               />
@@ -138,7 +136,7 @@ const Resume = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={resumeUrl}
+              src={RESUME_URL}
               alt="Resume"
               className="w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
             />

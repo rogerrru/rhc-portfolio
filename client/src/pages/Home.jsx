@@ -8,8 +8,10 @@ import ProjectModal from '../components/shared/ProjectModal.jsx';
 import SEOHead from '../components/shared/SEOHead.jsx';
 import LoadingSpinner from '../components/shared/LoadingSpinner.jsx';
 import { useProjects } from '../hooks/useProjects.js';
-import { useSiteSettings } from '../hooks/useSiteSettings.js';
 import portrait from '../assets/home/rectangle-1.png';
+
+const HERO_TITLE = 'ASPIRING COMPUTER SCIENCE PROFESSIONAL';
+const HERO_DESC = "My name's Roger Jr. H. Chegyem. I'm a Computer Science professional from Baguio City with experience in web development, data science, and machine learning. Glad you're here. Feel free to look through my projects and work — always open to learning, building, and collaborating. Cheers!";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -19,18 +21,11 @@ const fadeUp = {
 const Home = () => {
   const [selected, setSelected] = useState(null);
   const { projects, loading } = useProjects({ featured: true });
-  const { settings } = useSiteSettings();
-
-  const heroTitle = settings.home_hero_title || 'ASPIRING COMPUTER SCIENCE PROFESSIONAL';
-  const heroDesc = settings.home_hero_description || '';
-  const projectsDesc = settings.home_projects_description || '';
-
-  const featured = projects;
 
   return (
     <div className="flex flex-col min-h-screen">
       <SEOHead
-        description={settings.meta_description}
+        description="Roger Jr. H. Chegyem — Full-Stack Developer, Data Analyst, and Machine Learning Engineer."
         url="https://rogerrru.github.io/rhc-portfolio/"
       />
       <Header />
@@ -64,9 +59,9 @@ const Home = () => {
               variants={fadeUp}
               custom={0.2}
             >
-              <h3 className="text-base sm:text-xl font-lexend_exa font-black mb-4">{heroTitle}</h3>
+              <h3 className="text-base sm:text-xl font-lexend_exa font-black mb-4">{HERO_TITLE}</h3>
               <p className="font-lexend_exa text-sm sm:text-base text-gray-700 mb-6 leading-relaxed text-justify">
-                {heroDesc}
+                {HERO_DESC}
               </p>
               <Link
                 to="/resume"
@@ -99,32 +94,19 @@ const Home = () => {
             </Link>
           </motion.div>
 
-          {projectsDesc && (
-            <motion.p
-              className="font-lexend_exa text-base text-gray-700 mb-10 max-w-2xl leading-relaxed"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              custom={0.1}
-            >
-              {projectsDesc}
-            </motion.p>
-          )}
-
           {loading ? (
             <div className="flex justify-center py-20"><LoadingSpinner /></div>
           ) : (
             <motion.div
-              className="columns-1 sm:columns-2 lg:columns-3 gap-5"
+              className="flex flex-wrap justify-center gap-5"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={0.2}
             >
-              {featured.map((project) => (
-                <div key={project.id} className="break-inside-avoid mb-5">
+              {projects.map((project) => (
+                <div key={project.id} className="w-full max-w-sm sm:w-[calc(50%-10px)] sm:max-w-none lg:w-[calc(33.333%-14px)]">
                   <ProjectCard
                     project={{ ...project, _type: 'project' }}
                     onClick={setSelected}

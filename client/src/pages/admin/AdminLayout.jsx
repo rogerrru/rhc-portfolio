@@ -6,7 +6,6 @@ const navItems = [
   { to: '/admin', label: 'Dashboard', icon: '⬡', end: true },
   { to: '/admin/projects', label: 'Projects', icon: '◈' },
   { to: '/admin/certifications', label: 'Certifications', icon: '◎' },
-  { to: '/admin/settings', label: 'Settings', icon: '◇' },
 ];
 
 const AdminLayout = () => {
