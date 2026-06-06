@@ -1,1 +1,0 @@
-import{r as t,t as n}from"./index-Dh2dZq4T.js";const u=()=>{const[s,e]=t.useState([]),[r,a]=t.useState(!0),[i,o]=t.useState(null);return t.useEffect(()=>{n().then(e).catch(c=>o(c.message)).finally(()=>a(!1))},[]),{certifications:s,loading:r,error:i,setCertifications:e}};export{u};
