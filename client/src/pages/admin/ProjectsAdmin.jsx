@@ -39,11 +39,35 @@ const ProjectsAdmin = () => {
   const [editId, setEditId] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [showForm, setShowForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  // Class form
   const [classForm, setClassForm] = useState({ name: '', slug: '' });
   const [addingClass, setAddingClass] = useState(false);
+
+  const openAdd = () => {
+    setForm(EMPTY_PROJECT);
+    setEditId(null);
+    setShowModal(true);
+  };
+
+  const openEdit = (project) => {
+    setForm({
+      ...project,
+      techStack:  project.techStack?.join(', ') || '',
+      skills:     project.skills?.join(', ') || '',
+      takeaways:  project.takeaways?.join('\n') || '',
+      highlights: project.highlights?.join('\n') || '',
+      classId: project.classId?.toString() || '',
+    });
+    setEditId(project.id);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setForm(EMPTY_PROJECT);
+    setEditId(null);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -88,28 +112,12 @@ const ProjectsAdmin = () => {
         setProjects((prev) => [...prev, created]);
         toast.success('Project created');
       }
-      setForm(EMPTY_PROJECT);
-      setEditId(null);
-      setShowForm(false);
+      closeModal();
     } catch (err) {
       toast.error(err.response?.data?.error || 'Save failed');
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleEdit = (project) => {
-    setForm({
-      ...project,
-      techStack:  project.techStack?.join(', ') || '',
-      skills:     project.skills?.join(', ') || '',
-      takeaways:  project.takeaways?.join('\n') || '',
-      highlights: project.highlights?.join('\n') || '',
-      classId: project.classId?.toString() || '',
-    });
-    setEditId(project.id);
-    setShowForm(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
@@ -182,96 +190,12 @@ const ProjectsAdmin = () => {
       <div className="flex items-center justify-between">
         <h2 className="font-lexend_exa text-2xl font-black">PROJECTS</h2>
         <button
-          onClick={() => { setForm(EMPTY_PROJECT); setEditId(null); setShowForm((v) => !v); }}
+          onClick={openAdd}
           className="font-lexend_exa text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition"
         >
-          {showForm ? 'Cancel' : '+ Add Project'}
+          + Add Project
         </button>
       </div>
-
-      {/* Project form */}
-      {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 space-y-4">
-          <h3 className="font-lexend_exa font-black">{editId ? 'EDIT PROJECT' : 'NEW PROJECT'}</h3>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Title" name="title" value={form.title} onChange={handleChange} required />
-            <div>
-              <label className="admin-label">Class</label>
-              <select name="classId" value={form.classId} onChange={handleChange} required className="admin-input">
-                <option value="">Select class…</option>
-                {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="admin-label">Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="admin-input" />
-          </div>
-
-          <div>
-            <label className="admin-label">About (extended description for detail page)</label>
-            <textarea name="about" value={form.about} onChange={handleChange} rows={4} className="admin-input" />
-          </div>
-
-          <div>
-            <label className="admin-label">What We Did</label>
-            <textarea name="whatWeDid" value={form.whatWeDid} onChange={handleChange} rows={3} className="admin-input" />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="admin-label">Takeaways (one per line)</label>
-              <textarea name="takeaways" value={form.takeaways} onChange={handleChange} rows={4} className="admin-input" placeholder="Learned X&#10;Improved Y&#10;Achieved Z" />
-            </div>
-            <div>
-              <label className="admin-label">Highlights (one per line)</label>
-              <textarea name="highlights" value={form.highlights} onChange={handleChange} rows={4} className="admin-input" placeholder="Feature A&#10;Achievement B" />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Tech Stack (comma-separated)" name="techStack" value={form.techStack} onChange={handleChange} />
-            <Field label="Skills / Focus (comma-separated)" name="skills" value={form.skills} onChange={handleChange} />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Team (number or description, '1' = solo)" name="team" value={form.team} onChange={handleChange} />
-            <Field label="Duration (e.g. 3 months)" name="duration" value={form.duration} onChange={handleChange} />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Live Link" name="link" value={form.link} onChange={handleChange} />
-            <Field label="GitHub Repo" name="githubRepo" value={form.githubRepo} onChange={handleChange} />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            <Field label="Order" name="order" type="number" value={form.order} onChange={handleChange} />
-          </div>
-
-          <div>
-            <label className="admin-label">Image</label>
-            <div className="flex gap-3 items-center flex-wrap">
-              <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm" />
-              {uploading && <span className="text-xs text-gray-400">Uploading…</span>}
-              {form.imageUrl && (
-                <img src={form.imageUrl} alt="preview" className="h-16 w-16 object-cover rounded" />
-              )}
-            </div>
-            <input type="url" name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or paste Cloudinary URL" className="admin-input mt-2" />
-          </div>
-
-          <label className="flex items-center gap-2 font-lexend_exa text-sm cursor-pointer">
-            <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} className="rounded" />
-            Featured on Home page
-          </label>
-
-          <button type="submit" disabled={saving} className="font-lexend_exa bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition disabled:opacity-50">
-            {saving ? 'Saving…' : editId ? 'Update' : 'Create'}
-          </button>
-        </form>
-      )}
 
       {/* Project classes */}
       <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -287,18 +211,8 @@ const ProjectsAdmin = () => {
           {[...classes].sort((a, b) => a.order - b.order).map((c, idx, arr) => (
             <div key={c.id} className="flex items-center gap-3 bg-gray-100 rounded-lg px-4 py-2.5">
               <div className="flex flex-col gap-0.5 shrink-0">
-                <button
-                  onClick={() => handleMoveClass(c, 'up')}
-                  disabled={idx === 0}
-                  className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs"
-                  title="Move up"
-                >▲</button>
-                <button
-                  onClick={() => handleMoveClass(c, 'down')}
-                  disabled={idx === arr.length - 1}
-                  className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs"
-                  title="Move down"
-                >▼</button>
+                <button onClick={() => handleMoveClass(c, 'up')} disabled={idx === 0} className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs" title="Move up">▲</button>
+                <button onClick={() => handleMoveClass(c, 'down')} disabled={idx === arr.length - 1} className="text-gray-400 hover:text-black disabled:opacity-20 leading-none text-xs" title="Move down">▼</button>
               </div>
               <span className="font-lexend_exa text-sm flex-1">{c.name}</span>
               <span className="font-lexend_exa text-xs text-gray-400">order {c.order}</span>
@@ -322,13 +236,115 @@ const ProjectsAdmin = () => {
               </div>
             </div>
             <div className="flex gap-2 shrink-0">
-              <button onClick={() => handleEdit(p)} className="text-xs font-lexend_exa underline hover:text-gray-500">Edit</button>
+              <button onClick={() => openEdit(p)} className="text-xs font-lexend_exa underline hover:text-gray-500">Edit</button>
               <button onClick={() => handleDelete(p.id)} className="text-xs font-lexend_exa text-red-500 underline hover:text-red-700">Delete</button>
             </div>
           </div>
         ))}
         {projects.length === 0 && <p className="text-center text-gray-400 font-lexend_exa text-sm py-10">No projects yet.</p>}
       </div>
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={closeModal}>
+          <div
+            className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100 shrink-0">
+              <h3 className="font-lexend_exa font-black">{editId ? 'EDIT PROJECT' : 'NEW PROJECT'}</h3>
+              <button onClick={closeModal} className="text-gray-400 hover:text-black text-xl leading-none">✕</button>
+            </div>
+
+            {/* Scrollable form body */}
+            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-4 space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="Title" name="title" value={form.title} onChange={handleChange} required />
+                <div>
+                  <label className="admin-label">Class</label>
+                  <select name="classId" value={form.classId} onChange={handleChange} required className="admin-input">
+                    <option value="">Select class…</option>
+                    {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="admin-label">Description</label>
+                <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="admin-input" />
+              </div>
+
+              <div>
+                <label className="admin-label">About (extended description for detail page)</label>
+                <textarea name="about" value={form.about} onChange={handleChange} rows={4} className="admin-input" />
+              </div>
+
+              <div>
+                <label className="admin-label">What We Did</label>
+                <textarea name="whatWeDid" value={form.whatWeDid} onChange={handleChange} rows={3} className="admin-input" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="admin-label">Takeaways (one per line)</label>
+                  <textarea name="takeaways" value={form.takeaways} onChange={handleChange} rows={4} className="admin-input" placeholder={"Learned X\nImproved Y\nAchieved Z"} />
+                </div>
+                <div>
+                  <label className="admin-label">Highlights (one per line)</label>
+                  <textarea name="highlights" value={form.highlights} onChange={handleChange} rows={4} className="admin-input" placeholder={"Feature A\nAchievement B"} />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="Tech Stack (comma-separated)" name="techStack" value={form.techStack} onChange={handleChange} />
+                <Field label="Skills / Focus (comma-separated)" name="skills" value={form.skills} onChange={handleChange} />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="Team (number or description, '1' = solo)" name="team" value={form.team} onChange={handleChange} />
+                <Field label="Duration (e.g. 3 months)" name="duration" value={form.duration} onChange={handleChange} />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <Field label="Live Link" name="link" value={form.link} onChange={handleChange} />
+                <Field label="GitHub Repo" name="githubRepo" value={form.githubRepo} onChange={handleChange} />
+              </div>
+
+              <Field label="Order" name="order" type="number" value={form.order} onChange={handleChange} />
+
+              <div>
+                <label className="admin-label">Image</label>
+                <div className="flex gap-3 items-center flex-wrap">
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm" />
+                  {uploading && <span className="text-xs text-gray-400">Uploading…</span>}
+                  {form.imageUrl && <img src={form.imageUrl} alt="preview" className="h-16 w-16 object-cover rounded" />}
+                </div>
+                <input type="url" name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or paste Cloudinary URL" className="admin-input mt-2" />
+              </div>
+
+              <label className="flex items-center gap-2 font-lexend_exa text-sm cursor-pointer">
+                <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} className="rounded" />
+                Featured on Home page
+              </label>
+            </form>
+
+            {/* Modal footer */}
+            <div className="px-6 py-4 border-t border-gray-100 shrink-0 flex gap-3 justify-end">
+              <button type="button" onClick={closeModal} className="font-lexend_exa text-sm px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition">
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={saving}
+                className="font-lexend_exa bg-black text-white text-sm px-6 py-2 rounded-lg hover:bg-gray-800 transition disabled:opacity-50"
+              >
+                {saving ? 'Saving…' : editId ? 'Update' : 'Create'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
