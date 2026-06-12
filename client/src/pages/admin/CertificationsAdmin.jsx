@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { createCertification, updateCertification, deleteCertification, uploadFile } from '../../api/index.js';
 import { useCertifications } from '../../hooks/useCertifications.js';
@@ -6,29 +6,45 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner.jsx';
 
 const EMPTY = { name: '', organization: '', issuedAt: '', badgeUrl: '', credentialUrl: '' };
 
+const validate = (form) => {
+  if (!form.name.trim()) return 'Certification name is required.';
+  if (!form.organization.trim()) return 'Issuing organization is required.';
+  if (!form.issuedAt) return 'Issue date is required.';
+  return null;
+};
+
 const CertificationsAdmin = () => {
   const { certifications, loading, setCertifications } = useCertifications();
   const [form, setForm] = useState(EMPTY);
+  const [initialForm, setInitialForm] = useState(EMPTY);
   const [editId, setEditId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const dragStartedOnBackdrop = useRef(false);
+
+  const isDirty = () => JSON.stringify(form) !== JSON.stringify(initialForm);
 
   const openAdd = () => {
     setForm(EMPTY);
+    setInitialForm(EMPTY);
     setEditId(null);
     setShowModal(true);
   };
 
   const openEdit = (cert) => {
-    setForm({ ...cert, issuedAt: cert.issuedAt?.split('T')[0] || '' });
+    const f = { ...cert, issuedAt: cert.issuedAt?.split('T')[0] || '' };
+    setForm(f);
+    setInitialForm(f);
     setEditId(cert.id);
     setShowModal(true);
   };
 
   const closeModal = () => {
+    if (isDirty() && !confirm('You have unsaved changes. Close anyway?')) return;
     setShowModal(false);
     setForm(EMPTY);
+    setInitialForm(EMPTY);
     setEditId(null);
   };
 
@@ -51,6 +67,8 @@ const CertificationsAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const error = validate(form);
+    if (error) { toast.error(error); return; }
     setSaving(true);
     try {
       if (editId) {
@@ -62,7 +80,10 @@ const CertificationsAdmin = () => {
         setCertifications((prev) => [...prev, created]);
         toast.success('Created');
       }
-      closeModal();
+      setShowModal(false);
+      setForm(EMPTY);
+      setInitialForm(EMPTY);
+      setEditId(null);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Save failed');
     } finally {
@@ -114,7 +135,11 @@ const CertificationsAdmin = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={closeModal}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onMouseDown={(e) => { dragStartedOnBackdrop.current = e.target === e.currentTarget; }}
+          onClick={() => { if (dragStartedOnBackdrop.current) closeModal(); }}
+        >
           <div
             className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl"
             onClick={(e) => e.stopPropagation()}
@@ -129,23 +154,23 @@ const CertificationsAdmin = () => {
             <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-4 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="admin-label">Certification Name</label>
-                  <input name="name" value={form.name} onChange={handleChange} required className="admin-input" />
+                  <label className="admin-label">Certification Name <span className="text-red-500">*</span></label>
+                  <input name="name" value={form.name} onChange={handleChange} className="admin-input" placeholder="e.g. AWS Solutions Architect" />
                 </div>
                 <div>
-                  <label className="admin-label">Issuing Organization</label>
-                  <input name="organization" value={form.organization} onChange={handleChange} required className="admin-input" />
+                  <label className="admin-label">Issuing Organization <span className="text-red-500">*</span></label>
+                  <input name="organization" value={form.organization} onChange={handleChange} className="admin-input" placeholder="e.g. Amazon Web Services" />
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="admin-label">Issue Date</label>
-                  <input type="date" name="issuedAt" value={form.issuedAt} onChange={handleChange} required className="admin-input" />
+                  <label className="admin-label">Issue Date <span className="text-red-500">*</span></label>
+                  <input type="date" name="issuedAt" value={form.issuedAt} onChange={handleChange} className="admin-input" />
                 </div>
                 <div>
                   <label className="admin-label">Credential URL</label>
-                  <input type="url" name="credentialUrl" value={form.credentialUrl} onChange={handleChange} className="admin-input" />
+                  <input type="url" name="credentialUrl" value={form.credentialUrl} onChange={handleChange} className="admin-input" placeholder="https://…" />
                 </div>
               </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import {
   createProject,
@@ -32,28 +32,40 @@ const EMPTY_PROJECT = {
   order: 0,
 };
 
+const validate = (form) => {
+  if (!form.title.trim()) return 'Project title is required.';
+  if (!form.classId) return 'Please select a project class.';
+  if (!form.description.trim()) return 'Description is required.';
+  return null;
+};
+
 const ProjectsAdmin = () => {
   const { projects, loading, setProjects } = useProjects();
   const { classes, setClasses } = useProjectClasses();
 
   const [form, setForm] = useState(EMPTY_PROJECT);
+  const [initialForm, setInitialForm] = useState(EMPTY_PROJECT);
   const [editId, setEditId] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const dragStartedOnBackdrop = useRef(false);
 
   const [classForm, setClassForm] = useState({ name: '', slug: '' });
   const [addingClass, setAddingClass] = useState(false);
 
+  const isDirty = () => JSON.stringify(form) !== JSON.stringify(initialForm);
+
   const openAdd = () => {
     setForm(EMPTY_PROJECT);
+    setInitialForm(EMPTY_PROJECT);
     setEditId(null);
     setShowModal(true);
   };
 
   const openEdit = (project) => {
-    setForm({
+    const f = {
       ...project,
       techStack:  project.techStack?.join(', ') || '',
       skills:     project.skills?.join(', ') || '',
@@ -61,14 +73,18 @@ const ProjectsAdmin = () => {
       highlights: project.highlights?.join('\n') || '',
       screenshots: project.screenshots ?? [],
       classId: project.classId?.toString() || '',
-    });
+    };
+    setForm(f);
+    setInitialForm(f);
     setEditId(project.id);
     setShowModal(true);
   };
 
   const closeModal = () => {
+    if (isDirty() && !confirm('You have unsaved changes. Close anyway?')) return;
     setShowModal(false);
     setForm(EMPTY_PROJECT);
+    setInitialForm(EMPTY_PROJECT);
     setEditId(null);
   };
 
@@ -114,6 +130,8 @@ const ProjectsAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const error = validate(form);
+    if (error) { toast.error(error); return; }
     setSaving(true);
     const splitCSV = (s) => (s || '').split('\n').map((t) => t.trim()).filter(Boolean);
     const payload = {
@@ -136,7 +154,10 @@ const ProjectsAdmin = () => {
         setProjects((prev) => [...prev, created]);
         toast.success('Project created');
       }
-      closeModal();
+      setShowModal(false);
+      setForm(EMPTY_PROJECT);
+      setInitialForm(EMPTY_PROJECT);
+      setEditId(null);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Save failed');
     } finally {
@@ -270,7 +291,11 @@ const ProjectsAdmin = () => {
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" onClick={closeModal}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onMouseDown={(e) => { dragStartedOnBackdrop.current = e.target === e.currentTarget; }}
+          onClick={() => { if (dragStartedOnBackdrop.current) closeModal(); }}
+        >
           <div
             className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl"
             onClick={(e) => e.stopPropagation()}
@@ -286,8 +311,8 @@ const ProjectsAdmin = () => {
               <div className="grid md:grid-cols-2 gap-4">
                 <Field label="Title" name="title" value={form.title} onChange={handleChange} required />
                 <div>
-                  <label className="admin-label">Class</label>
-                  <select name="classId" value={form.classId} onChange={handleChange} required className="admin-input">
+                  <label className="admin-label">Class <span className="text-red-500">*</span></label>
+                  <select name="classId" value={form.classId} onChange={handleChange} className="admin-input">
                     <option value="">Select class…</option>
                     {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -295,8 +320,8 @@ const ProjectsAdmin = () => {
               </div>
 
               <div>
-                <label className="admin-label">Description</label>
-                <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="admin-input" />
+                <label className="admin-label">Description <span className="text-red-500">*</span></label>
+                <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="admin-input" />
               </div>
 
               <div>
@@ -399,8 +424,10 @@ const ProjectsAdmin = () => {
 
 const Field = ({ label, name, value, onChange, type = 'text', required }) => (
   <div>
-    <label className="admin-label">{label}</label>
-    <input type={type} name={name} value={value} onChange={onChange} required={required} className="admin-input" />
+    <label className="admin-label">
+      {label} {required && <span className="text-red-500">*</span>}
+    </label>
+    <input type={type} name={name} value={value} onChange={onChange} className="admin-input" />
   </div>
 );
 
