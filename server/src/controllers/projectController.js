@@ -28,7 +28,7 @@ const parseArr = (val) =>
 export const create = async (req, res) => {
   const {
     title, description, about, whatWeDid, takeaways, highlights, skills,
-    team, duration, imageUrl, techStack, link, githubRepo, classId, featured, order,
+    team, duration, imageUrl, screenshots, techStack, link, githubRepo, classId, featured, order,
   } = req.body;
 
   const project = await prisma.project.create({
@@ -42,6 +42,7 @@ export const create = async (req, res) => {
       team: team ?? null,
       duration: duration ?? null,
       imageUrl: imageUrl ?? null,
+      screenshots: parseArr(screenshots),
       techStack: parseArr(techStack),
       link: link ?? null,
       githubRepo: githubRepo ?? null,
@@ -57,7 +58,7 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   const {
     title, description, about, whatWeDid, takeaways, highlights, skills,
-    team, duration, imageUrl, techStack, link, githubRepo, classId, featured, order,
+    team, duration, imageUrl, screenshots, techStack, link, githubRepo, classId, featured, order,
   } = req.body;
 
   const project = await prisma.project.update({
@@ -73,6 +74,7 @@ export const update = async (req, res) => {
       ...(team !== undefined && { team }),
       ...(duration !== undefined && { duration }),
       ...(imageUrl !== undefined && { imageUrl }),
+      ...(screenshots !== undefined && { screenshots: parseArr(screenshots) }),
       ...(techStack !== undefined && { techStack: parseArr(techStack) }),
       ...(link !== undefined && { link }),
       ...(githubRepo !== undefined && { githubRepo }),

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../components/layout/Header.jsx';
@@ -39,6 +39,15 @@ const ProjectDetails = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [lightbox, setLightbox] = useState(null); // index of open screenshot
+
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') closeLightbox(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [closeLightbox]);
 
   useEffect(() => {
     const load = async () => {
@@ -187,6 +196,23 @@ const ProjectDetails = () => {
             </Section>
           )}
 
+          {/* Screenshots */}
+          {item.screenshots?.length > 0 && (
+            <Section title="Screenshots">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {item.screenshots.map((url, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setLightbox(idx)}
+                    className="overflow-hidden rounded-lg border border-gray-200 hover:border-gray-400 transition focus:outline-none"
+                  >
+                    <img src={url} alt={`Screenshot ${idx + 1}`} className="w-full h-36 object-cover hover:scale-105 transition duration-300" />
+                  </button>
+                ))}
+              </div>
+            </Section>
+          )}
+
           {/* External links */}
           {(item.link || item.githubRepo) && (
             <div className="flex gap-6 mt-10 pt-6 border-t border-gray-200">
@@ -206,6 +232,30 @@ const ProjectDetails = () => {
           )}
         </div>
       </main>
+
+      {lightbox !== null && item.screenshots?.length > 0 && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          <button onClick={closeLightbox} className="absolute top-5 right-6 text-white text-2xl leading-none hover:text-gray-300">✕</button>
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i - 1 + item.screenshots.length) % item.screenshots.length); }}
+            className="absolute left-4 text-white text-3xl leading-none hover:text-gray-300 px-2"
+          >‹</button>
+          <img
+            src={item.screenshots[lightbox]}
+            alt={`Screenshot ${lightbox + 1}`}
+            className="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i + 1) % item.screenshots.length); }}
+            className="absolute right-4 text-white text-3xl leading-none hover:text-gray-300 px-2"
+          >›</button>
+          <span className="absolute bottom-5 text-white/60 text-sm font-lexend_exa">{lightbox + 1} / {item.screenshots.length}</span>
+        </div>
+      )}
 
       <Footer />
       <BackToTop />

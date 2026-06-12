@@ -23,6 +23,7 @@ const EMPTY_PROJECT = {
   team: '',
   duration: '',
   imageUrl: '',
+  screenshots: [],
   techStack: '',
   link: '',
   githubRepo: '',
@@ -38,6 +39,7 @@ const ProjectsAdmin = () => {
   const [form, setForm] = useState(EMPTY_PROJECT);
   const [editId, setEditId] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [uploadingScreenshot, setUploadingScreenshot] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -57,6 +59,7 @@ const ProjectsAdmin = () => {
       skills:     project.skills?.join(', ') || '',
       takeaways:  project.takeaways?.join('\n') || '',
       highlights: project.highlights?.join('\n') || '',
+      screenshots: project.screenshots ?? [],
       classId: project.classId?.toString() || '',
     });
     setEditId(project.id);
@@ -72,6 +75,26 @@ const ProjectsAdmin = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
+  };
+
+  const handleScreenshotUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingScreenshot(true);
+    try {
+      const { url } = await uploadFile(file);
+      setForm((f) => ({ ...f, screenshots: [...f.screenshots, url] }));
+      toast.success('Screenshot uploaded');
+    } catch {
+      toast.error('Screenshot upload failed');
+    } finally {
+      setUploadingScreenshot(false);
+      e.target.value = '';
+    }
+  };
+
+  const removeScreenshot = (idx) => {
+    setForm((f) => ({ ...f, screenshots: f.screenshots.filter((_, i) => i !== idx) }));
   };
 
   const handleImageUpload = async (e) => {
@@ -99,6 +122,7 @@ const ProjectsAdmin = () => {
       skills:     form.skills.split(',').map((t) => t.trim()).filter(Boolean),
       takeaways:  splitCSV(form.takeaways),
       highlights: splitCSV(form.highlights),
+      screenshots: form.screenshots,
       classId: parseInt(form.classId),
       order: parseInt(form.order) || 0,
     };
@@ -314,13 +338,37 @@ const ProjectsAdmin = () => {
               <Field label="Order" name="order" type="number" value={form.order} onChange={handleChange} />
 
               <div>
-                <label className="admin-label">Image</label>
+                <label className="admin-label">Cover Image</label>
                 <div className="flex gap-3 items-center flex-wrap">
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm" />
                   {uploading && <span className="text-xs text-gray-400">Uploading…</span>}
                   {form.imageUrl && <img src={form.imageUrl} alt="preview" className="h-16 w-16 object-cover rounded" />}
                 </div>
                 <input type="url" name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or paste Cloudinary URL" className="admin-input mt-2" />
+              </div>
+
+              <div>
+                <label className="admin-label">Screenshots</label>
+                <div className="flex gap-3 items-center flex-wrap mb-3">
+                  <label className="cursor-pointer font-lexend_exa text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition">
+                    {uploadingScreenshot ? 'Uploading…' : '+ Add Screenshot'}
+                    <input type="file" accept="image/*" onChange={handleScreenshotUpload} className="hidden" disabled={uploadingScreenshot} />
+                  </label>
+                </div>
+                {form.screenshots.length > 0 && (
+                  <div className="flex flex-wrap gap-3">
+                    {form.screenshots.map((url, idx) => (
+                      <div key={idx} className="relative group">
+                        <img src={url} alt={`screenshot ${idx + 1}`} className="h-20 w-28 object-cover rounded-lg border border-gray-200" />
+                        <button
+                          type="button"
+                          onClick={() => removeScreenshot(idx)}
+                          className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                        >✕</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <label className="flex items-center gap-2 font-lexend_exa text-sm cursor-pointer">
