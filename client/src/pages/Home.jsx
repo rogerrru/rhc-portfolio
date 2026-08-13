@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '../components/layout/Header.jsx';
 import Footer from '../components/layout/Footer.jsx';
-import ProjectCard from '../components/shared/ProjectCard.jsx';
+import InfiniteProjectCarousel from '../components/shared/InfiniteProjectCarousel.jsx';
 import ProjectModal from '../components/shared/ProjectModal.jsx';
 import SEOHead from '../components/shared/SEOHead.jsx';
 import LoadingSpinner from '../components/shared/LoadingSpinner.jsx';
@@ -23,7 +23,7 @@ const Home = () => {
   const { projects, loading } = useProjects({ featured: true });
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
       <SEOHead
         description="Roger Jr. H. Chegyem — Full-Stack Developer, Data Analyst, and Machine Learning Engineer."
         url="https://rogerrru.github.io/rhc-portfolio/"
@@ -98,21 +98,20 @@ const Home = () => {
             <div className="flex justify-center py-20"><LoadingSpinner /></div>
           ) : (
             <motion.div
-              className="flex flex-wrap justify-center gap-5"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
               custom={0.2}
             >
-              {projects.map((project) => (
-                <div key={project.id} className="w-full max-w-sm sm:w-[calc(50%-10px)] sm:max-w-none lg:w-[calc(33.333%-14px)]">
-                  <ProjectCard
-                    project={{ ...project, _type: 'project' }}
-                    onClick={setSelected}
-                  />
-                </div>
-              ))}
+              <div className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen px-6 md:px-12">
+                <InfiniteProjectCarousel
+                  projects={projects.map((project) => ({ ...project, _type: 'project' }))}
+                  speed={32}
+                  pauseOnHover
+                  onCardClick={setSelected}
+                />
+              </div>
             </motion.div>
           )}
         </section>

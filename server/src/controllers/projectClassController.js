@@ -19,20 +19,21 @@ export const getOne = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  const { name, slug, order } = req.body;
+  const { name, slug, description, order } = req.body;
   const cls = await prisma.projectClass.create({
-    data: { name, slug, order: order ?? 0 },
+    data: { name, slug, description, order: order ?? 0 },
   });
   res.status(201).json(cls);
 };
 
 export const update = async (req, res) => {
-  const { name, slug, order } = req.body;
+  const { name, slug, description, order } = req.body;
   const cls = await prisma.projectClass.update({
     where: { id: parseInt(req.params.id) },
     data: {
       ...(name !== undefined && { name }),
       ...(slug !== undefined && { slug }),
+      ...(description !== undefined && { description }),
       ...(order !== undefined && { order }),
     },
   });

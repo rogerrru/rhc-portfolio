@@ -48,17 +48,32 @@ async function main() {
   const software = await prisma.projectClass.upsert({
     where: { slug: 'software' },
     update: {},
-    create: { name: 'Software', slug: 'software', order: 1 },
+    create: {
+      name: 'Software',
+      slug: 'software',
+      order: 1,
+      description: "End-to-end applications and tools I've designed, built, and shipped.",
+    },
   });
   const website = await prisma.projectClass.upsert({
     where: { slug: 'website' },
     update: {},
-    create: { name: 'Website', slug: 'website', order: 2 },
+    create: {
+      name: 'Website',
+      slug: 'website',
+      order: 2,
+      description: 'Web platforms and interfaces built for real users.',
+    },
   });
   const mlAi = await prisma.projectClass.upsert({
     where: { slug: 'publications' },
     update: {},
-    create: { name: 'Publications', slug: 'publications', order: 3 },
+    create: {
+      name: 'Publications',
+      slug: 'publications',
+      order: 3,
+      description: "Research papers and studies I've co-authored or contributed to.",
+    },
   });
   console.log('  Project classes seeded');
 

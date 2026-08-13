@@ -51,9 +51,18 @@ const Portfolio = () => {
               <MarqueeSection text={cls.name.toUpperCase()} />
 
               {cls.projects?.length > 0 ? (
-                <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-5 mt-12 px-5">
+                <div className="max-w-6xl mx-auto columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-5 mt-12 px-5">
+                  <div className="mb-5 break-inside-avoid">
+                    <span className="inline-block font-lexend_exa text-[10px] tracking-[0.2em] uppercase text-white bg-black px-2 py-1 rounded-full mb-3">
+                      {cls.name}
+                    </span>
+                    <p className="font-lexend_exa text-xl sm:text-2xl font-bold leading-snug">
+                      {cls.description || `${cls.projects.length} project${cls.projects.length === 1 ? '' : 's'} in ${cls.name}`}
+                    </p>
+                  </div>
+
                   {cls.projects.map((project) => (
-                    <div key={project.id} className="w-full max-w-sm sm:w-[calc(50%-10px)] sm:max-w-none lg:w-[calc(33.333%-14px)]">
+                    <div key={project.id} className="mb-5 break-inside-avoid">
                       <ProjectCard
                         project={{ ...project, class: cls, _type: 'project' }}
                         onClick={setSelected}
