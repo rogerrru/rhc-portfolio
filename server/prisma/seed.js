@@ -51,7 +51,7 @@ async function main() {
     create: {
       name: 'Software',
       slug: 'software',
-      order: 1,
+      order: 2,
       description: "End-to-end applications and tools I've designed, built, and shipped.",
     },
   });
@@ -61,7 +61,7 @@ async function main() {
     create: {
       name: 'Website',
       slug: 'website',
-      order: 2,
+      order: 1,
       description: 'Web platforms and interfaces built for real users.',
     },
   });
