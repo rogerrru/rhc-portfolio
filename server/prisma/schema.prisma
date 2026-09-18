@@ -42,6 +42,8 @@ model Project {
   duration    String?
   imageUrl    String?
   screenshots String[]
+  // Phone-sized shots; `screenshots` above are the desktop ones.
+  mobileScreenshots String[] @default([])
   techStack   String[]
   link        String?
   githubRepo  String?

@@ -24,6 +24,7 @@ const EMPTY_PROJECT = {
   duration: '',
   imageUrl: '',
   screenshots: [],
+  mobileScreenshots: [],
   techStack: '',
   link: '',
   githubRepo: '',
@@ -31,6 +32,12 @@ const EMPTY_PROJECT = {
   featured: false,
   order: 0,
 };
+
+// Screenshots are kept per device: `screenshots` holds the desktop ones.
+const SCREENSHOT_GROUPS = [
+  { field: 'screenshots', label: 'Desktop' },
+  { field: 'mobileScreenshots', label: 'Mobile' },
+];
 
 const validate = (form) => {
   if (!form.title.trim()) return 'Project title is required.';
@@ -72,6 +79,7 @@ const ProjectsAdmin = () => {
       takeaways:  project.takeaways?.join('\n') || '',
       highlights: project.highlights?.join('\n') || '',
       screenshots: project.screenshots ?? [],
+      mobileScreenshots: project.mobileScreenshots ?? [],
       classId: project.classId?.toString() || '',
     };
     setForm(f);
@@ -93,13 +101,13 @@ const ProjectsAdmin = () => {
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const handleScreenshotUpload = async (e) => {
+  const handleScreenshotUpload = (field) => async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setUploadingScreenshot(true);
     try {
       const { url } = await uploadFile(file);
-      setForm((f) => ({ ...f, screenshots: [...f.screenshots, url] }));
+      setForm((f) => ({ ...f, [field]: [...f[field], url] }));
       toast.success('Screenshot uploaded');
     } catch {
       toast.error('Screenshot upload failed');
@@ -109,8 +117,17 @@ const ProjectsAdmin = () => {
     }
   };
 
-  const removeScreenshot = (idx) => {
-    setForm((f) => ({ ...f, screenshots: f.screenshots.filter((_, i) => i !== idx) }));
+  const removeScreenshot = (field, idx) => {
+    setForm((f) => ({ ...f, [field]: f[field].filter((_, i) => i !== idx) }));
+  };
+
+  // Re-file a screenshot under the other device without re-uploading it.
+  const moveScreenshot = (from, to, idx) => {
+    setForm((f) => ({
+      ...f,
+      [from]: f[from].filter((_, i) => i !== idx),
+      [to]: [...f[to], f[from][idx]],
+    }));
   };
 
   const handleImageUpload = async (e) => {
@@ -141,6 +158,7 @@ const ProjectsAdmin = () => {
       takeaways:  splitCSV(form.takeaways),
       highlights: splitCSV(form.highlights),
       screenshots: form.screenshots,
+      mobileScreenshots: form.mobileScreenshots,
       classId: parseInt(form.classId),
       order: parseInt(form.order) || 0,
     };
@@ -372,29 +390,45 @@ const ProjectsAdmin = () => {
                 <input type="url" name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="Or paste Cloudinary URL" className="admin-input mt-2" />
               </div>
 
-              <div>
-                <label className="admin-label">Screenshots</label>
-                <div className="flex gap-3 items-center flex-wrap mb-3">
-                  <label className="cursor-pointer font-lexend_exa text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition">
-                    {uploadingScreenshot ? 'Uploading…' : '+ Add Screenshot'}
-                    <input type="file" accept="image/*" onChange={handleScreenshotUpload} className="hidden" disabled={uploadingScreenshot} />
-                  </label>
-                </div>
-                {form.screenshots.length > 0 && (
-                  <div className="flex flex-wrap gap-3">
-                    {form.screenshots.map((url, idx) => (
-                      <div key={idx} className="relative group">
-                        <img src={url} alt={`screenshot ${idx + 1}`} className="h-20 w-28 object-cover rounded-lg border border-gray-200" />
-                        <button
-                          type="button"
-                          onClick={() => removeScreenshot(idx)}
-                          className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                        >✕</button>
+              {SCREENSHOT_GROUPS.map(({ field, label }) => {
+                const other = SCREENSHOT_GROUPS.find((g) => g.field !== field);
+                return (
+                  <div key={field}>
+                    <label className="admin-label">{label} Screenshots</label>
+                    <div className="flex gap-3 items-center flex-wrap mb-3">
+                      <label className="cursor-pointer font-lexend_exa text-sm bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition">
+                        {uploadingScreenshot ? 'Uploading…' : `+ Add ${label} Screenshot`}
+                        <input type="file" accept="image/*" onChange={handleScreenshotUpload(field)} className="hidden" disabled={uploadingScreenshot} />
+                      </label>
+                    </div>
+                    {form[field].length > 0 && (
+                      <div className="flex flex-wrap gap-3">
+                        {form[field].map((url, idx) => (
+                          <div key={`${url}-${idx}`} className="relative group">
+                            <img
+                              src={url}
+                              alt={`${label.toLowerCase()} screenshot ${idx + 1}`}
+                              className={`object-cover rounded-lg border border-gray-200 ${field === 'mobileScreenshots' ? 'h-28 w-16' : 'h-20 w-28'}`}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeScreenshot(field, idx)}
+                              title="Remove"
+                              className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                            >✕</button>
+                            <button
+                              type="button"
+                              onClick={() => moveScreenshot(field, other.field, idx)}
+                              title={`Move to ${other.label}`}
+                              className="absolute -bottom-1.5 -right-1.5 bg-black text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                            >⇄</button>
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
-                )}
-              </div>
+                );
+              })}
 
               <label className="flex items-center gap-2 font-lexend_exa text-sm cursor-pointer">
                 <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} className="rounded" />

@@ -40,15 +40,31 @@ const ProjectDetails = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [lightbox, setLightbox] = useState(null); // index of open screenshot
+  const [lightbox, setLightbox] = useState(null); // index of open screenshot within the active device set
+  const [device, setDevice] = useState('desktop'); // which screenshot set is showing
 
   const closeLightbox = useCallback(() => setLightbox(null), []);
 
+  // Screenshots come in two device sets; the toggle only shows when a project has both.
+  const deviceSets = [
+    { key: 'desktop', label: 'Desktop', shots: item?.screenshots ?? [] },
+    { key: 'mobile', label: 'Mobile', shots: item?.mobileScreenshots ?? [] },
+  ].filter((d) => d.shots.length > 0);
+  const activeSet = deviceSets.find((d) => d.key === device) ?? deviceSets[0];
+  const activeShots = activeSet?.shots ?? [];
+  const shotCount = activeShots.length;
+  const lightboxOpen = lightbox !== null;
+
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') closeLightbox(); };
+    if (!lightboxOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') setLightbox((i) => (i - 1 + shotCount) % shotCount);
+      else if (e.key === 'ArrowRight') setLightbox((i) => (i + 1) % shotCount);
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [closeLightbox]);
+  }, [lightboxOpen, shotCount, closeLightbox]);
 
   useEffect(() => {
     const load = async () => {
@@ -207,45 +223,81 @@ const ProjectDetails = () => {
           )}
 
           {/* Screenshots */}
-          {item.screenshots?.length > 0 && (
+          {deviceSets.length > 0 && (
             <Section title="Screenshots">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {item.screenshots.map((url, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setLightbox(idx)}
-                    className="overflow-hidden rounded-lg border border-gray-200 hover:border-gray-400 transition focus:outline-none"
-                  >
-                    <img src={url} alt={`Screenshot ${idx + 1}`} className="w-full h-36 object-cover hover:scale-105 transition duration-300" />
-                  </button>
-                ))}
-              </div>
+              {deviceSets.length > 1 && (
+                <div role="group" aria-label="Screenshot device" className="inline-flex gap-1 p-1 mb-4 bg-gray-100 rounded-full">
+                  {deviceSets.map(({ key, label }) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setDevice(key)}
+                      aria-pressed={activeSet.key === key}
+                      className={`font-lexend_exa text-xs font-bold px-4 py-1.5 rounded-full transition-colors ${
+                        activeSet.key === key ? 'bg-black text-white' : 'text-gray-500 hover:text-black'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {activeSet.key === 'mobile' ? (
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                  {activeShots.map((url, idx) => (
+                    <button
+                      key={url}
+                      onClick={() => setLightbox(idx)}
+                      className="overflow-hidden rounded-2xl border-[3px] border-gray-900 bg-gray-900 aspect-[9/19] focus:outline-none"
+                    >
+                      <img src={url} alt={`Mobile screenshot ${idx + 1}`} className="w-full h-full object-cover object-top hover:scale-105 transition duration-300" />
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {activeShots.map((url, idx) => (
+                    <button
+                      key={url}
+                      onClick={() => setLightbox(idx)}
+                      className="overflow-hidden rounded-lg border border-gray-200 hover:border-gray-400 transition focus:outline-none"
+                    >
+                      <img src={url} alt={`Screenshot ${idx + 1}`} className="w-full h-36 object-cover hover:scale-105 transition duration-300" />
+                    </button>
+                  ))}
+                </div>
+              )}
             </Section>
           )}
         </div>
       </main>
 
-      {lightbox !== null && item.screenshots?.length > 0 && (
+      {lightboxOpen && shotCount > 0 && (
         <div
           className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4"
           onClick={closeLightbox}
         >
-          <button onClick={closeLightbox} className="absolute top-5 right-6 text-white text-2xl leading-none hover:text-gray-300">✕</button>
+          <button onClick={closeLightbox} aria-label="Close" className="absolute top-5 right-6 text-white text-2xl leading-none hover:text-gray-300">✕</button>
           <button
-            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i - 1 + item.screenshots.length) % item.screenshots.length); }}
+            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i - 1 + shotCount) % shotCount); }}
+            aria-label="Previous screenshot"
             className="absolute left-4 text-white text-3xl leading-none hover:text-gray-300 px-2"
           >‹</button>
           <img
-            src={item.screenshots[lightbox]}
-            alt={`Screenshot ${lightbox + 1}`}
+            src={activeShots[lightbox]}
+            alt={`${activeSet.label} screenshot ${lightbox + 1}`}
             className="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain"
             onClick={(e) => e.stopPropagation()}
           />
           <button
-            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i + 1) % item.screenshots.length); }}
+            onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i + 1) % shotCount); }}
+            aria-label="Next screenshot"
             className="absolute right-4 text-white text-3xl leading-none hover:text-gray-300 px-2"
           >›</button>
-          <span className="absolute bottom-5 text-white/60 text-sm font-lexend_exa">{lightbox + 1} / {item.screenshots.length}</span>
+          <span className="absolute bottom-5 text-white/60 text-sm font-lexend_exa">
+            {deviceSets.length > 1 && `${activeSet.label} · `}{lightbox + 1} / {shotCount}
+          </span>
         </div>
       )}
 
