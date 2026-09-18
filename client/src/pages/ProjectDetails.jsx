@@ -6,6 +6,7 @@ import Footer from '../components/layout/Footer.jsx';
 import SEOHead from '../components/shared/SEOHead.jsx';
 import LoadingSpinner from '../components/shared/LoadingSpinner.jsx';
 import BackToTop from '../components/shared/BackToTop.jsx';
+import ProjectLinks from '../components/shared/ProjectLinks.jsx';
 import { fetchProjects, fetchPublications } from '../api/index.js';
 
 const fadeUp = {
@@ -96,6 +97,8 @@ const ProjectDetails = () => {
   const teamLabel = item._type === 'publication'
     ? (item.coAuthors?.length ? item.coAuthors.join(', ') : 'Roger Jr. Chegyem')
     : (isSolo ? 'Roger Jr. Chegyem' : item.team);
+  const hasLinks = item.link || item.githubRepo;
+  const linkLabel = item._type === 'publication' ? 'View Publication' : 'Live Project';
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -124,11 +127,18 @@ const ProjectDetails = () => {
             <motion.img
               src={item.imageUrl}
               alt={item.title}
-              className="w-full h-72 object-cover rounded-lg shadow mb-8"
+              className={`w-full h-72 object-cover rounded-lg shadow ${hasLinks ? 'mb-4' : 'mb-8'}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
             />
+          )}
+
+          {/* External links — sit right under the hero image, same pills as the summary modal */}
+          {hasLinks && (
+            <div className="flex flex-wrap items-center gap-2 mb-8">
+              <ProjectLinks link={item.link} githubRepo={item.githubRepo} linkLabel={linkLabel} />
+            </div>
           )}
 
           {/* About */}
@@ -211,24 +221,6 @@ const ProjectDetails = () => {
                 ))}
               </div>
             </Section>
-          )}
-
-          {/* External links */}
-          {(item.link || item.githubRepo) && (
-            <div className="flex gap-6 mt-10 pt-6 border-t border-gray-200">
-              {item.link && (
-                <a href={item.link} target="_blank" rel="noopener noreferrer"
-                  className="font-lexend_exa font-semibold underline hover:text-gray-500 text-sm">
-                  View Project →
-                </a>
-              )}
-              {item.githubRepo && (
-                <a href={item.githubRepo} target="_blank" rel="noopener noreferrer"
-                  className="font-lexend_exa font-semibold underline hover:text-gray-500 text-sm">
-                  GitHub →
-                </a>
-              )}
-            </div>
           )}
         </div>
       </main>

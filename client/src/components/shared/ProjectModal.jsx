@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import ProjectLinks from './ProjectLinks.jsx';
 
 const ProjectModal = ({ project, onClose }) => {
   useEffect(() => {
@@ -67,18 +68,7 @@ const ProjectModal = ({ project, onClose }) => {
                       {project.class.name}
                     </span>
                   )}
-                  {project.link && (
-                    <a href={project.link} target="_blank" rel="noopener noreferrer"
-                      className="text-xs bg-black text-white font-bold px-3 py-1 rounded-full hover:bg-gray-700 transition">
-                      Live Project ↗
-                    </a>
-                  )}
-                  {project.githubRepo && (
-                    <a href={project.githubRepo} target="_blank" rel="noopener noreferrer"
-                      className="text-xs border border-gray-300 text-gray-700 font-bold px-3 py-1 rounded-full hover:bg-gray-100 transition">
-                      GitHub ↗
-                    </a>
-                  )}
+                  <ProjectLinks link={project.link} githubRepo={project.githubRepo} />
                 </div>
               </div>
 
